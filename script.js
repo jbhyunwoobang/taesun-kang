@@ -252,6 +252,33 @@
     window.addEventListener("load", drawLinks);
   }
 
+  /* ---------- Lightbox ---------- */
+  const lightbox = $("#lightbox");
+  const lbImg = $("#lightboxImg");
+  const lbCap = $("#lightboxCap");
+  function openLightbox(full, alt, cap) {
+    if (!lightbox) return;
+    lbImg.src = full; lbImg.alt = alt || "";
+    lbCap.textContent = cap || "";
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    body.style.overflow = "hidden";
+  }
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    body.style.overflow = "";
+  }
+  $$(".gallery__item").forEach((fig) => {
+    $(".gallery__frame", fig)?.addEventListener("click", () => {
+      openLightbox(fig.getAttribute("data-full"), $("img", fig)?.alt, $(".gallery__cap", fig)?.textContent);
+    });
+  });
+  $("#lightboxClose")?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
+
   /* ---------- Footer year ---------- */
   const yearEl = $("#year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
