@@ -24,11 +24,11 @@
   --shadow:0 1px 2px rgba(31,28,20,.05), 0 18px 40px -22px rgba(31,28,20,.45);
   --shadow-lg:0 30px 70px -34px rgba(31,28,20,.55);
 
-  --serif-en:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --display-en:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --serif-ko:"Noto Sans KR",system-ui,-apple-system,sans-serif;
-  --body-ko:"Noto Sans KR",system-ui,-apple-system,sans-serif;
-  --sans:"Inter","Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif-en:"Pretendard Variable","Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display-en:"Pretendard Variable","Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif-ko:"Pretendard Variable","Pretendard",system-ui,-apple-system,sans-serif;
+  --body-ko:"Pretendard Variable","Pretendard",system-ui,-apple-system,sans-serif;
+  --sans:"Pretendard Variable","Pretendard",system-ui,-apple-system,"Segoe UI",sans-serif;
 
   --maxw:1180px;
   --gut:clamp(20px,5vw,64px);
@@ -205,7 +205,7 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1}
   opacity:0;animation:fadeUp .9s .1s var(--ease) forwards}
 .hero__name{margin:0;line-height:.92;display:flex;flex-direction:column;align-items:center;gap:6px}
 .hero__name-ko{font-family:var(--serif-ko);font-weight:800;
-  font-size:clamp(64px,15vw,168px);letter-spacing:.02em;
+  font-size:clamp(64px,15vw,168px);letter-spacing:-.03em;
   background:linear-gradient(180deg,var(--ink),var(--ink-soft));-webkit-background-clip:text;background-clip:text;color:transparent;
   opacity:0;animation:fadeUp 1s .2s var(--ease) forwards}
 .hero__name-hanja{font-family:var(--serif-ko);font-weight:700;font-size:clamp(22px,4.4vw,42px);
