@@ -31,17 +31,18 @@
 <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
   <defs>
     <filter id="illustrate" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
-      <!-- denoise: smooth JPEG speckle into clean painterly regions before posterizing -->
-      <feGaussianBlur stdDeviation="1.7" result="soft" />
-      <feColorMatrix in="soft" type="saturate" values="0.5" result="muted" />
-      <!-- gentle tone curve, then many soft bands for smooth gradation (not harsh banding) -->
+      <!-- light denoise only: knock back JPEG speckle without losing facial detail -->
+      <feGaussianBlur stdDeviation="0.5" result="soft" />
+      <feColorMatrix in="soft" type="saturate" values="0.55" result="muted" />
+      <!-- many bands for smooth gradation -->
       <feComponentTransfer in="muted" result="poster">
         <feFuncR type="discrete" tableValues="0.16 0.30 0.42 0.53 0.63 0.72 0.81 0.90 1" />
         <feFuncG type="discrete" tableValues="0.11 0.24 0.36 0.47 0.57 0.67 0.76 0.85 0.94" />
         <feFuncB type="discrete" tableValues="0.07 0.18 0.29 0.39 0.49 0.59 0.69 0.79 0.88" />
       </feComponentTransfer>
-      <!-- soften the band edges so regions read as brushed/painted, not stepped -->
-      <feGaussianBlur in="poster" stdDeviation="0.6" />
+      <!-- unsharp: crisp the region edges for a clean illustrated look (kernel sums to 1) -->
+      <feConvolveMatrix order="3" preserveAlpha="true"
+        kernelMatrix="0 -0.65 0  -0.65 3.6 -0.65  0 -0.65 0" />
     </filter>
   </defs>
 </svg>
