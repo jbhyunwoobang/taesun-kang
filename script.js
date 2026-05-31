@@ -16,7 +16,6 @@
 
   /* ---------- Language toggle (EN / KO) ---------- */
   const STORE_LANG = "kts-lang";
-  const STORE_THEME = "kts-theme";
 
   function applyLang(lang) {
     body.setAttribute("data-lang", lang);
@@ -50,22 +49,6 @@
   $("#footerLang")?.addEventListener("click", (e) => {
     e.preventDefault();
     applyLang(body.getAttribute("data-lang") === "ko" ? "en" : "ko");
-  });
-
-  /* ---------- Theme toggle ---------- */
-  function applyTheme(t) {
-    body.setAttribute("data-theme", t);
-    const meta = $('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", t === "dark" ? "#070711" : "#eceefb");
-    try { localStorage.setItem(STORE_THEME, t); } catch (e) {}
-  }
-  (function initTheme() {
-    let t = "dark";
-    try { t = localStorage.getItem(STORE_THEME) || "dark"; } catch (e) {}
-    applyTheme(t === "light" ? "light" : "dark");
-  })();
-  $("#themeToggle")?.addEventListener("click", () => {
-    applyTheme(body.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
 
   initLang();

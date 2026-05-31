@@ -158,9 +158,6 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1}
   border:1px solid var(--line);background:var(--card);color:var(--ink-soft);transition:.25s;
 }
 .icon-btn:hover{border-color:var(--gold);color:var(--ink);transform:translateY(-1px)}
-.icon-moon{display:none}
-[data-theme="dark"] .icon-sun{display:none}
-[data-theme="dark"] .icon-moon{display:block}
 
 .nav__burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;border:none;background:none;cursor:pointer;align-items:center;justify-content:center}
 .nav__burger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:.3s var(--ease)}
@@ -593,12 +590,6 @@ body[data-lang="ko"] .gallery__cap{word-break:keep-all}
   --shadow:0 1px 2px rgba(0,0,0,.5),0 22px 55px -28px rgba(0,0,0,.92);
   --shadow-lg:0 44px 95px -42px rgba(0,0,0,.95);
 }
-[data-theme="light"]{
-  --paper:#f4ede1; --paper-2:#ece2d2; --paper-3:#e4d8c4;
-  --ink:#2a2014; --ink-soft:#5a4a34; --ink-mute:#8a7656;
-  --line:rgba(150,110,50,.18); --line-2:rgba(150,110,50,.09);
-  --card:rgba(255,250,242,.72); --card-2:rgba(255,250,242,.84);
-}
 
 /* ---- moving backdrop: aurora blobs, drifting grid, pointer spotlight ---- */
 body{background:var(--paper)}
@@ -612,7 +603,6 @@ body::before{opacity:.28;mix-blend-mode:overlay}
     radial-gradient(44vw 44vw at 64% 92%, rgba(204,120,56,.30), transparent 62%),
     radial-gradient(30vw 30vw at 28% 80%, rgba(255,178,82,.24), transparent 62%);
   animation:auroraDrift 28s ease-in-out infinite alternate}
-[data-theme="light"] .neon-aurora{opacity:.34;filter:blur(86px) saturate(150%)}
 @keyframes auroraDrift{
   0%{transform:translate3d(-3%,-2%,0) scale(1.05) rotate(0deg)}
   50%{transform:translate3d(3%,2%,0) scale(1.14) rotate(7deg)}
@@ -625,9 +615,6 @@ html::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   -webkit-mask:radial-gradient(120% 85% at 50% -10%,#000,transparent 72%);
   mask:radial-gradient(120% 85% at 50% -10%,#000,transparent 72%);
   animation:gridDrift 18s linear infinite}
-[data-theme="light"] html::before{background-image:
-  linear-gradient(rgba(60,90,200,.07) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(60,90,200,.07) 1px,transparent 1px)}
 @keyframes gridDrift{to{background-position:0 64px,64px 0}}
 .neon-spot{position:fixed;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(26vw 26vw at var(--mx,50%) var(--my,26%), rgba(255,178,82,.14), transparent 60%)}
@@ -635,7 +622,6 @@ html::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
 /* ---- let the backdrop show through sections; cards become glass ---- */
 .section,.section--overview,.section--alt{background:transparent}
 .section--dark,.section--words{background:rgba(6,7,16,.55)}
-[data-theme="light"] .section--dark,[data-theme="light"] .section--words{background:rgba(10,12,30,.88);color:#e7e1d4}
 .footer{background:rgba(6,7,16,.6);border-top:1px solid var(--line-2)}
 
 .factcard,.mini-card,.idea,.callout,.tl__card,.network__panel,.network__stage,
@@ -668,10 +654,6 @@ html::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   animation:fadeUp 1s .2s var(--ease) forwards, neonPulse 5.5s 1.6s ease-in-out infinite}
 @keyframes neonPulse{0%,100%{filter:drop-shadow(0 0 20px rgba(255,178,82,.45)) drop-shadow(0 0 46px rgba(224,150,60,.32))}
   50%{filter:drop-shadow(0 0 30px rgba(255,178,82,.7)) drop-shadow(0 0 70px rgba(255,128,82,.4))}}
-[data-theme="light"] .hero__name-ko{
-  background:linear-gradient(180deg,#3a2410,#7a3f1a 48%,#c8742f);
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 1px 1px rgba(255,255,255,.5))}
 .hero__name-hanja{color:var(--ink-mute)}
 .hero__quote-ko{color:var(--red);text-shadow:var(--glow-red)}
 .hero__taegukgi{opacity:.20;filter:drop-shadow(0 0 50px rgba(224,150,60,.45))}
