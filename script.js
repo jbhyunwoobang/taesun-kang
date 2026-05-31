@@ -56,16 +56,13 @@
   function applyTheme(t) {
     body.setAttribute("data-theme", t);
     const meta = $('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", t === "dark" ? "#15161e" : "#f4ede0");
+    if (meta) meta.setAttribute("content", t === "dark" ? "#070711" : "#eceefb");
     try { localStorage.setItem(STORE_THEME, t); } catch (e) {}
   }
   (function initTheme() {
-    let t = "light";
-    try {
-      t = localStorage.getItem(STORE_THEME) ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
-    } catch (e) {}
-    applyTheme(t === "dark" ? "dark" : "light");
+    let t = "dark";
+    try { t = localStorage.getItem(STORE_THEME) || "dark"; } catch (e) {}
+    applyTheme(t === "light" ? "light" : "dark");
   })();
   $("#themeToggle")?.addEventListener("click", () => {
     applyTheme(body.getAttribute("data-theme") === "dark" ? "light" : "dark");
@@ -251,6 +248,26 @@
     setTimeout(drawLinks, 400);
     window.addEventListener("load", drawLinks);
   }
+
+  /* ---------- Neon dynamic background ---------- */
+  (function neonFX() {
+    const aurora = document.createElement("div");
+    aurora.className = "neon-aurora"; aurora.setAttribute("aria-hidden", "true");
+    const spot = document.createElement("div");
+    spot.className = "neon-spot"; spot.setAttribute("aria-hidden", "true");
+    body.prepend(spot); body.prepend(aurora);
+    if (reduce) return;
+    let raf = 0, mx = 50, my = 26;
+    window.addEventListener("pointermove", (e) => {
+      mx = (e.clientX / window.innerWidth) * 100;
+      my = (e.clientY / window.innerHeight) * 100;
+      if (!raf) raf = requestAnimationFrame(() => {
+        spot.style.setProperty("--mx", mx + "%");
+        spot.style.setProperty("--my", my + "%");
+        raf = 0;
+      });
+    }, { passive: true });
+  })();
 
   /* ---------- Lightbox ---------- */
   const lightbox = $("#lightbox");
