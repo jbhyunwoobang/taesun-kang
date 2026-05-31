@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "taesun-kang",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4521"],
+      "port": 4521
+    }
+  ]
+}
