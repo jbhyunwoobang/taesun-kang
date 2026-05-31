@@ -220,6 +220,8 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1}
 .hero__quote::before{right:calc(100% + 18px)}.hero__quote::after{left:calc(100% + 18px)}
 .hero__quote-ko{display:block;font-family:var(--serif-ko);font-weight:700;font-size:clamp(20px,3.2vw,30px);color:var(--red)}
 .hero__quote-en{display:block;font-family:var(--display-en);font-style:italic;font-size:clamp(15px,1.8vw,19px);color:var(--ink-mute);margin-top:6px}
+.hero__honor .hero__quote-ko{font-size:clamp(26px,4.4vw,46px);letter-spacing:.01em;line-height:1.18}
+.hero__honor .hero__quote-en{font-style:normal;letter-spacing:.04em;text-transform:uppercase;font-size:clamp(12px,1.3vw,15px);margin-top:12px;color:var(--ink-soft)}
 .hero__lede{font-size:clamp(17px,1.4vw,20px);line-height:1.7;color:var(--ink-soft);margin:30px auto 0;max-width:680px;
   opacity:0;animation:fadeUp 1s .75s var(--ease) forwards}
 .hero__cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:40px;
