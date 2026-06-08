@@ -87,6 +87,7 @@
       <a href="#legacy" data-scroll class="i18n" data-en="Legacy" data-ko="유산">Legacy</a>
       <a href="#home" data-scroll class="i18n" data-en="His Home" data-ko="자택">His Home</a>
       <a href="#words" data-scroll class="i18n" data-en="His Words" data-ko="어록">His Words</a>
+      <a href="#films" data-scroll class="i18n" data-en="Film" data-ko="영상">Film</a>
       <a href="#sources" data-scroll class="i18n" data-en="Sources" data-ko="자료">Sources</a>
     </nav>
 
@@ -615,11 +616,143 @@
     </div>
   </section>
 
+  <!-- ===== FILM / MOVING IMAGE ARCHIVE ===== -->
+  <section class="section section--film" id="films">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="section__index">08</span>
+        <h2 class="section__title i18n" data-en="Moving Image Archive" data-ko="영상 기록">Moving Image Archive</h2>
+        <p class="section__kicker i18n" data-en="A living patriot, captured on camera" data-ko="카메라에 담긴 생존 애국지사">A living patriot, captured on camera</p>
+      </div>
+
+      <div class="film reveal">
+        <div class="film__tabs" role="tablist" aria-label="Video categories">
+          <button class="film__tab is-active" data-film-tab="interview" role="tab" aria-selected="true">
+            <span class="film__tab-no">01</span>
+            <span class="film__tab-label i18n" data-en="Interviews" data-ko="인터뷰">Interviews</span>
+          </button>
+          <button class="film__tab" data-film-tab="anthem" role="tab" aria-selected="false">
+            <span class="film__tab-no">02</span>
+            <span class="film__tab-label i18n" data-en="National Anthem" data-ko="애국가">National Anthem</span>
+          </button>
+          <button class="film__tab" data-film-tab="play" role="tab" aria-selected="false">
+            <span class="film__tab-no">03</span>
+            <span class="film__tab-label i18n" data-en="Theatre" data-ko="연극">Theatre</span>
+          </button>
+        </div>
+
+        <!-- INTERVIEW PANEL -->
+        <div class="film__panel is-active" data-film-panel="interview">
+          <div class="film__layout">
+            <div class="film__stage" data-yt="155W8YN7mRQ">
+              <img class="film__thumb" src="https://i.ytimg.com/vi/155W8YN7mRQ/hqdefault.jpg" alt="Kang Tae-sun, KBS interview" loading="lazy" width="480" height="360" />
+              <button class="film__play" type="button" aria-label="Play video">
+                <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+              </button>
+              <div class="film__stage-tag i18n" data-en="KBS News · 15 Aug 2024" data-ko="KBS 뉴스 · 2024.08.15">KBS News · 15 Aug 2024</div>
+              <h3 class="film__stage-title i18n" data-en="“We should become one”" data-ko="“하나가 돼야 할 텐데”">“We should become one”</h3>
+            </div>
+            <ul class="film__list">
+              <li>
+                <button class="film__item is-current" data-yt="155W8YN7mRQ" data-thumb="https://i.ytimg.com/vi/155W8YN7mRQ/hqdefault.jpg"
+                  data-tag-en="KBS News · 15 Aug 2024" data-tag-ko="KBS 뉴스 · 2024.08.15"
+                  data-title-en="“We should become one”" data-title-ko="“하나가 돼야 할 텐데”">
+                  <span class="film__item-thumb" style="background-image:url('https://i.ytimg.com/vi/155W8YN7mRQ/mqdefault.jpg')"><span class="film__item-dur">2:11</span></span>
+                  <span class="film__item-text">
+                    <span class="film__item-title i18n" data-en="A 101-year-old's plea for unity" data-ko="101살의 한숨, 하나가 돼야 할 텐데">A 101-year-old's plea for unity</span>
+                    <span class="film__item-src i18n" data-en="KBS News · 2024" data-ko="KBS 뉴스 · 2024">KBS News · 2024</span>
+                  </span>
+                </button>
+              </li>
+              <li>
+                <button class="film__item" data-yt="bucndbcYf3E" data-thumb="https://i.ytimg.com/vi/bucndbcYf3E/hqdefault.jpg"
+                  data-tag-en="‘Grandfather's Stories’ · 2025" data-tag-ko="할아버지가 들려주는 독립운동 이야기 · 2025"
+                  data-title-en="Meeting the future generation" data-title-ko="미래세대와의 만남">
+                  <span class="film__item-thumb" style="background-image:url('https://i.ytimg.com/vi/bucndbcYf3E/mqdefault.jpg')"></span>
+                  <span class="film__item-text">
+                    <span class="film__item-title i18n" data-en="Telling his story to the young" data-ko="미래세대에게 들려주는 이야기">Telling his story to the young</span>
+                    <span class="film__item-src i18n" data-en="‘Grandfather's Stories’ · 2025" data-ko="할아버지가 들려주는 이야기 · 2025">‘Grandfather's Stories’ · 2025</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ANTHEM PANEL (documented moment, no standalone clip) -->
+        <div class="film__panel" data-film-panel="anthem">
+          <div class="film__anthem">
+            <div class="film__anthem-visual" aria-hidden="true">
+              <div class="film__eq"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="film__anthem-body">
+              <span class="film__anthem-eyebrow i18n" data-en="15 August 2025 · Jeju Art Center" data-ko="2025년 8월 15일 · 제주아트센터">15 August 2025 · Jeju Art Center</span>
+              <h3 class="film__anthem-title i18n" data-en="The anthem, in a darkened hall" data-ko="불 꺼진 객석에 울려 퍼진 애국가">The anthem, in a darkened hall</h3>
+              <p class="film__anthem-text i18n"
+                 data-en="At Jeju's 80th Liberation Day ceremony, every light in the hall was switched off. In the dark, Kang Tae-sun's recorded voice sang the first verse of the Aegukga — Jeju's only living patriot leading the room. The footage was screened at the ceremony itself and was not released as a standalone video, so it lives on in news coverage."
+                 data-ko="제80주년 제주 광복절 경축식. 장내의 모든 조명이 꺼졌습니다. 어둠 속에서 강태선 애국지사가 부르는 애국가 1절이 영상으로 울려 퍼졌고, 제주 유일의 생존 애국지사가 객석을 이끌었습니다. 이 영상은 경축식 현장에서만 상영되어 별도 영상으로 공개되지 않았기에, 언론 보도로 그 순간이 전해집니다.">
+              </p>
+              <div class="film__anthem-links">
+                <a class="film__src-link" href="https://www.newsis.com/view/NISX20250815_0003291984" target="_blank" rel="noopener noreferrer">
+                  <span class="i18n" data-en="Newsis coverage" data-ko="뉴시스 보도">Newsis coverage</span> ↗
+                </a>
+                <a class="film__src-link" href="https://m.ihalla.com/article.php?aid=1755230513775450073" target="_blank" rel="noopener noreferrer">
+                  <span class="i18n" data-en="Halla Ilbo coverage" data-ko="한라일보 보도">Halla Ilbo coverage</span> ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLAY PANEL -->
+        <div class="film__panel" data-film-panel="play">
+          <div class="film__layout">
+            <div class="film__stage" data-yt="SvKvXhkOUoM">
+              <img class="film__thumb" src="https://i.ytimg.com/vi/SvKvXhkOUoM/hqdefault.jpg" alt="Commemorative play for Kang Tae-sun" loading="lazy" width="480" height="360" />
+              <button class="film__play" type="button" aria-label="Play video">
+                <svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+              </button>
+              <div class="film__stage-tag i18n" data-en="KBS News · 14 Aug 2025" data-ko="KBS 뉴스 · 2025.08.14">KBS News · 14 Aug 2025</div>
+              <h3 class="film__stage-title i18n" data-en="A play in his honour opens" data-ko="강태선 기념 연극 막올라">A play in his honour opens</h3>
+            </div>
+            <ul class="film__list">
+              <li>
+                <button class="film__item is-current" data-yt="SvKvXhkOUoM" data-thumb="https://i.ytimg.com/vi/SvKvXhkOUoM/hqdefault.jpg"
+                  data-tag-en="KBS News · 14 Aug 2025" data-tag-ko="KBS 뉴스 · 2025.08.14"
+                  data-title-en="A play in his honour opens" data-title-ko="강태선 기념 연극 막올라">
+                  <span class="film__item-thumb" style="background-image:url('https://i.ytimg.com/vi/SvKvXhkOUoM/mqdefault.jpg')"></span>
+                  <span class="film__item-text">
+                    <span class="film__item-title i18n" data-en="Commemorative play premieres" data-ko="기념 연극 막올라">Commemorative play premieres</span>
+                    <span class="film__item-src i18n" data-en="KBS News · 2025" data-ko="KBS 뉴스 · 2025">KBS News · 2025</span>
+                  </span>
+                </button>
+              </li>
+              <li>
+                <button class="film__item" data-yt="-EtaKs6AI0Q" data-thumb="https://i.ytimg.com/vi/-EtaKs6AI0Q/hqdefault.jpg"
+                  data-tag-en="KBS News · 14 Aug 2025" data-tag-ko="KBS 뉴스 · 2025.08.14"
+                  data-title-en="On stage for the 80th Liberation Day" data-title-ko="광복 80주년, 무대에 오르다">
+                  <span class="film__item-thumb" style="background-image:url('https://i.ytimg.com/vi/-EtaKs6AI0Q/mqdefault.jpg')"></span>
+                  <span class="film__item-text">
+                    <span class="film__item-title i18n" data-en="On stage for the 80th Liberation Day" data-ko="광복 80주년, 무대에 오르다">On stage for the 80th Liberation Day</span>
+                    <span class="film__item-src i18n" data-en="KBS News · 2025" data-ko="KBS 뉴스 · 2025">KBS News · 2025</span>
+                  </span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="film__note i18n" data-en="Videos are hosted on YouTube and load only when you press play. The anthem footage was shown at the 2025 ceremony and not published separately." data-ko="영상은 YouTube에 호스팅되며, 재생을 누를 때만 불러옵니다. 애국가 영상은 2025년 경축식에서 상영되었을 뿐 별도로 공개되지 않았습니다.">
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== SOURCES ===== -->
   <section class="section" id="sources">
     <div class="container">
       <div class="section__head reveal">
-        <span class="section__index">08</span>
+        <span class="section__index">09</span>
         <h2 class="section__title i18n" data-en="Sources &amp; Reliability" data-ko="자료와 신뢰도">Sources &amp; Reliability</h2>
         <p class="section__kicker i18n" data-en="The evidence base, graded honestly" data-ko="솔직하게 등급을 매긴 근거 자료">The evidence base, graded honestly</p>
       </div>

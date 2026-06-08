@@ -288,4 +288,76 @@
     const active = $(".node.is-active", stage || document);
     if (active) selectNode(active);
   });
+
+  /* ---------- Film / moving-image archive ---------- */
+  (function film() {
+    const tabs = $$(".film__tab");
+    const panels = $$(".film__panel");
+    if (!tabs.length) return;
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const key = tab.getAttribute("data-film-tab");
+        tabs.forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", String(on));
+        });
+        panels.forEach((p) =>
+          p.classList.toggle("is-active", p.getAttribute("data-film-panel") === key)
+        );
+      });
+    });
+
+    function playStage(stage) {
+      const id = stage.getAttribute("data-yt");
+      if (!id || stage.classList.contains("is-playing")) return;
+      const iframe = document.createElement("iframe");
+      iframe.src =
+        "https://www.youtube-nocookie.com/embed/" +
+        id +
+        "?autoplay=1&rel=0&modestbranding=1";
+      iframe.allow =
+        "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      iframe.setAttribute("title", "Kang Tae-sun video");
+      stage.appendChild(iframe);
+      stage.classList.add("is-playing");
+    }
+
+    $$(".film__stage").forEach((stage) => {
+      stage.addEventListener("click", () => playStage(stage));
+    });
+
+    $$(".film__item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const panel = item.closest(".film__panel");
+        const stage = $(".film__stage", panel);
+        if (!stage) return;
+        $("iframe", stage)?.remove();
+        stage.classList.remove("is-playing");
+
+        stage.setAttribute("data-yt", item.getAttribute("data-yt"));
+        const img = $(".film__thumb", stage);
+        const thumb = item.getAttribute("data-thumb");
+        if (img && thumb) img.src = thumb;
+
+        const tag = $(".film__stage-tag", stage);
+        const title = $(".film__stage-title", stage);
+        const lang = body.getAttribute("data-lang") || "en";
+        if (tag) {
+          tag.setAttribute("data-en", item.getAttribute("data-tag-en"));
+          tag.setAttribute("data-ko", item.getAttribute("data-tag-ko"));
+          tag.textContent = item.getAttribute("data-tag-" + lang) || item.getAttribute("data-tag-en");
+        }
+        if (title) {
+          title.setAttribute("data-en", item.getAttribute("data-title-en"));
+          title.setAttribute("data-ko", item.getAttribute("data-title-ko"));
+          title.textContent = item.getAttribute("data-title-" + lang) || item.getAttribute("data-title-en");
+        }
+
+        $$(".film__item", panel).forEach((i) => i.classList.toggle("is-current", i === item));
+      });
+    });
+  })();
 })();
