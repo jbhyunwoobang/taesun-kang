@@ -527,6 +527,23 @@ body[data-lang="ko"] .film__item-title{font-family:var(--serif-ko)}
 }
 @media (max-width:760px){.gallery{columns:2 160px}}
 
+/* ---- small phones ---- */
+@media (max-width:560px){
+  .hero{padding:100px var(--gut) 60px}
+  .hero__portrait{width:clamp(178px,54vw,236px);margin-bottom:28px}
+  .hero__name-hanja{letter-spacing:.4em;padding-left:.4em}
+  .hero__honor .hero__quote-ko{font-size:clamp(23px,7vw,32px)}
+  .section{padding:clamp(60px,15vw,96px) 0}
+  .section__head{margin-bottom:clamp(32px,9vw,48px)}
+  .section__index{margin-bottom:16px}
+  .film__tabs{gap:0}
+  .film__tab{padding:12px 12px;font-size:12px;letter-spacing:.02em}
+  .src-table{min-width:600px}
+  .to-top{right:16px;bottom:16px;width:44px;height:44px}
+}
+/* keep gallery single-column on the smallest screens (must win over the 2-col rule above) */
+@media (max-width:440px){.gallery{columns:1}}
+
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
   .hero__eyebrow,.hero__name-ko,.hero__name-hanja,.hero__roman,.hero__quote,.hero__lede,.hero__cta,.hero__scroll,.hero__portrait{animation:none;opacity:1}
