@@ -28,7 +28,7 @@
   --shadow-lg:0 26px 60px -34px rgba(40,30,20,.42);
 
   /* type — 궁서체 first, elegant serif fallbacks */
-  --serif-ko:"궁서","궁서체","GungsuhChe","Gungsuh","Nanum Myeongjo","Noto Serif KR",serif;
+  --serif-ko:"Noto Serif KR","Nanum Myeongjo","AppleMyungjo","Batang","바탕",serif;
   --serif-en:"EB Garamond","Nanum Myeongjo","Noto Serif KR",Georgia,"Times New Roman",serif;
   --display-en:var(--serif-en);
   --body-ko:var(--serif-ko);
