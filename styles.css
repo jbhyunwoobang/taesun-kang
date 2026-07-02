@@ -61,13 +61,7 @@ body::before{
 /* kill any leftover dynamic backdrops */
 .neon-aurora,.neon-spot{display:none!important}
 
-body[data-lang="ko"]{font-family:var(--body-ko)}
-body[data-lang="ko"] .hero__lede,
-body[data-lang="ko"] .lead-para,
-body[data-lang="ko"] .prose p,
-body[data-lang="ko"] .section__title,
-body[data-lang="ko"] .bio__chapter p,
-body[data-lang="ko"] .tl__card p{word-break:keep-all}
+body[data-lang="ko"]{font-family:var(--body-ko);word-break:keep-all;overflow-wrap:break-word}
 
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
