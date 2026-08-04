@@ -283,6 +283,11 @@
      One rAF-throttled pass: hero parallax, chronology spine, gallery drift. */
   const hero = $(".hero");
   const tlList = $("#timelineList");
+  const tlRail = $("#tlRail");
+  // must be evaluated per frame, not cached: the breakpoint can be crossed
+  // by a window resize without a reload
+  const railMQ = window.matchMedia("(min-width:901px)");
+  const isRail = () => railMQ.matches && !reduce;
   const galleryImgs = $$(".gallery__frame img");
   // [element, travel-in-px], negative travel moves against the scroll
   const drifters = [];
@@ -324,11 +329,22 @@
     if (hero) {
       pending.push([hero, "--hp", clamp(y / (hero.offsetHeight || vh), 0, 1).toFixed(4)]);
     }
-    if (tlList) {
+    /* Chronology. Above 900px it is a horizontal rail: scrolling down the
+       pinned track slides the list sideways. Below that it stays a vertical
+       spine that simply draws itself. */
+    if (tlList && tlRail && isRail()) {
+      const r = tlRail.getBoundingClientRect();
+      const p = clamp(-r.top / Math.max(r.height - vh, 1), 0, 1);
+      // travel is measured, not assumed: card widths are clamp()-based
+      const travel = Math.max(tlList.scrollWidth - window.innerWidth, 0);
+      pending.push([tlList, "--tx", (-travel * p).toFixed(1) + "px"]);
+      pending.push([tlList, "--tl-p", p.toFixed(4)]);
+    } else if (tlList) {
       const r = tlList.getBoundingClientRect();
       // the spine is drawn to wherever a reading eye would be, 60% down the viewport
       const p = clamp((vh * 0.6 - r.top) / (r.height || 1), 0, 1);
       pending.push([tlList, "--tl-p", p.toFixed(4)]);
+      pending.push([tlList, "--tx", "0px"]);
     }
     // in-frame photo drift: the plate holds still while the image breathes inside it
     for (let i = 0; i < galleryImgs.length; i++) {
