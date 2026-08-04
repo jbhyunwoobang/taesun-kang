@@ -1,8 +1,8 @@
 /* =========================================================
-   Kang Tae-sun · 강태선 — cinematic layer
+   Kang Tae-sun · 강태선, cinematic layer
    A single fixed WebGL quad renders a flowing sumi-ink field behind the
    full-viewport "plates". It is procedural, so it stays sharp at any
-   resolution — unlike the 600px archive photographs, which are treated
+   resolution, unlike the 600px archive photographs, which are treated
    as film rather than upscaled.
    Falls back to a static CSS wash if WebGL is unavailable.
    ========================================================= */
@@ -51,11 +51,11 @@
     void main(){
       vec2 uv = vUv;
       vec2 p  = vec2(uv.x * (uRes.x / max(uRes.y, 1.0)), uv.y) * 2.15;
-      // fast enough to be visibly alive when the page is standing still —
+      // fast enough to be visibly alive when the page is standing still 
       // the previous 0.042 was a creep you could only see by staring
       float t = uTime * 0.30;
 
-      // domain warp twice — this is what makes it read as ink in water
+      // domain warp twice, this is what makes it read as ink in water
       vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(5.2, 1.3 - t)));
       vec2 r = vec2(fbm(p + 3.6 * q + vec2(1.7, 9.2) + t * 0.62),
                     fbm(p + 3.6 * q + vec2(8.3, 2.8) - t * 0.55));
@@ -81,7 +81,7 @@
       float glow = exp(-d * d * 3.0) * uLight;
       col += vec3(1.0, 0.875, 0.64) * glow;
 
-      // vignette, then grain — always grain last
+      // vignette, then grain, always grain last
       float vig = smoothstep(1.18, 0.22, distance(uv, vec2(0.5)));
       col *= mix(1.0, vig, 0.5);
       float g = hash(uv * uRes + fract(uTime) * vec2(97.3, 31.7));
@@ -144,7 +144,7 @@
 
   let vw = 0, vh = 0;
   function resize() {
-    // cap the backing store — a 4K canvas of fbm is not worth the watts
+    // cap the backing store, a 4K canvas of fbm is not worth the watts
     const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
     vw = Math.round(window.innerWidth * dpr);
     vh = Math.round(window.innerHeight * dpr);
@@ -189,7 +189,7 @@
     }
   }
 
-  /* scroll velocity — px per frame, decaying, shared with the shader */
+  /* scroll velocity, px per frame, decaying, shared with the shader */
   let lastY = window.scrollY, velocity = 0;
   function readVelocity() {
     const y = window.scrollY;

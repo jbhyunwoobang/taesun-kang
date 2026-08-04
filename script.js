@@ -1,5 +1,5 @@
 /* =========================================================
-   Kang Tae-sun · 강태선 — interactions
+   Kang Tae-sun · 강태선, interactions
    ========================================================= */
 (function () {
   "use strict";
@@ -28,7 +28,7 @@
 
   /* ---------- Line splitting ----------
      Wraps each rendered line in an overflow-clipped box so the line can slide
-     up from behind its own edge. Only ever applied to plain-text elements —
+     up from behind its own edge. Only ever applied to plain-text elements 
      anything with inline markup would lose it. Re-runs after a language swap
      (applyLang rewrites innerHTML) and after a resize (lines re-wrap). */
   const LINE_TARGETS = ".section__title,.quote-feature__text,.wordcard__ko,.hero__honor-ko";
@@ -130,7 +130,7 @@
   initLang();
 
   /* ---------- Split the hero name into per-character cells ----------
-     Only runs on elements without .i18n — applyLang() rewrites i18n
+     Only runs on elements without .i18n, applyLang() rewrites i18n
      nodes wholesale and would discard the spans. */
   $$("[data-split]").forEach((el) => {
     if (el.classList.contains("i18n")) return;
@@ -257,7 +257,7 @@
       { rootMargin: "-8% 0px -20% 0px", threshold: 0 }
     );
     chapters.forEach((s) => {
-      // only veil what is still well below the fold — anything already on
+      // only veil what is still well below the fold, anything already on
       // screen must never be covered up
       if (s.getBoundingClientRect().top > window.innerHeight * 0.9) {
         s.classList.add("is-veiled");
@@ -284,9 +284,9 @@
   const hero = $(".hero");
   const tlList = $("#timelineList");
   const galleryImgs = $$(".gallery__frame img");
-  // [element, travel-in-px] — negative travel moves against the scroll
+  // [element, travel-in-px], negative travel moves against the scroll
   const drifters = [];
-  // travel is deliberately large — ±40px reads as nothing on a 1400px screen
+  // travel is deliberately large, ±40px reads as nothing on a 1400px screen
   $$(".section__head").forEach((el) => drifters.push([el, -150]));
   $$(".wordcard__ko").forEach((el) => drifters.push([el, -110]));
   $$(".film__stage").forEach((el) => drifters.push([el, -90]));
@@ -326,7 +326,7 @@
     }
     if (tlList) {
       const r = tlList.getBoundingClientRect();
-      // the spine is drawn to wherever a reading eye would be — 60% down the viewport
+      // the spine is drawn to wherever a reading eye would be, 60% down the viewport
       const p = clamp((vh * 0.6 - r.top) / (r.height || 1), 0, 1);
       pending.push([tlList, "--tl-p", p.toFixed(4)]);
     }

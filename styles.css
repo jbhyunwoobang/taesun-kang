@@ -1,11 +1,11 @@
 /* =========================================================
-   Kang Tae-sun · 강태선 — Interactive History
-   Editorial / exhibition theme — ink on paper
+   Kang Tae-sun · 강태선, Interactive History
+   Editorial / exhibition theme, ink on paper
    Asymmetric layout · two ink chapters · scroll-authored motion
    ========================================================= */
 
 :root{
-  /* palette — paper & sumi ink */
+  /* palette, paper & sumi ink */
   --paper:#faf7f1;
   --paper-2:#f2ece1;
   --paper-3:#e9e1d3;
@@ -40,7 +40,7 @@
   --gut:clamp(20px,5vw,64px);
 
   --ease:cubic-bezier(.22,.61,.36,1);
-  --ease-out:cubic-bezier(.16,1,.3,1);   /* expo-out — the "settle" */
+  --ease-out:cubic-bezier(.16,1,.3,1);   /* expo-out, the "settle" */
 
   /* page ground colour, kept out of the ink-chapter override so the chapter
      curtain can still paint itself paper-coloured over a dark section */
@@ -69,7 +69,7 @@ body::before{
 
 body[data-lang="ko"]{font-family:var(--body-ko);word-break:keep-all;overflow-wrap:break-word}
 /* these run in Korean whatever the page language is, so they need keep-all
-   unconditionally — otherwise they break mid-word in EN mode */
+   unconditionally, otherwise they break mid-word in EN mode */
 .wordcard__ko,.hero__name-ko,.hero__honor-ko,.nav__brand-ko,.footer__ko,
 .film__stage-title,.film__anthem-title,.film__anthem-text,
 .node--center,.preloader__name{word-break:keep-all;overflow-wrap:break-word}
@@ -134,7 +134,7 @@ body[data-lang="en"] .callout p{-webkit-hyphens:auto;hyphens:auto}
 .preloader.is-done{transform:translateY(-100%);opacity:.6;visibility:hidden}
 @keyframes preFallback{to{transform:translateY(-100%);opacity:0;visibility:hidden}}
 
-/* The hero entrance is held until the curtain lifts — otherwise it plays out
+/* The hero entrance is held until the curtain lifts, otherwise it plays out
    behind the preloader and the reveal is already over when the page appears. */
 .hero__eyebrow::before,.hero__name-ko .ch,.hero__name-hanja,.hero__roman,
 .hero__honor,.hero__lede,.hero__enter,.hero__portrait-ring,
@@ -205,7 +205,7 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1;color:var(-
 .btn--small{padding:10px 18px;font-size:12px}
 
 /* =========================================================
-   HERO — asymmetric editorial plate
+   HERO: asymmetric editorial plate
    ========================================================= */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:132px 0 96px;overflow:hidden;background:var(--paper)}
@@ -217,7 +217,7 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1;color:var(-
     radial-gradient(circle at 38% 42%, var(--red) 0 13%, transparent 13.5%),
     radial-gradient(circle at 62% 58%, var(--blue) 0 13%, transparent 13.5%),
     conic-gradient(from 0deg at 50% 50%, var(--red) 0 50%, var(--blue) 50% 100%);
-  /* feathered edge — an ink wash behind the type, not a hard disc */
+  /* feathered edge, an ink wash behind the type, not a hard disc */
   -webkit-mask:radial-gradient(circle at 50% 50%, #000 0 19%, rgba(0,0,0,.5) 24%, transparent 28%);
           mask:radial-gradient(circle at 50% 50%, #000 0 19%, rgba(0,0,0,.5) 24%, transparent 28%)}
 /* slow ink wash so the paper is never dead flat */
@@ -262,8 +262,11 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1;color:var(-
 
 .hero__honor{margin:30px 0 0;padding-top:26px;border-top:1px solid var(--line);max-width:34em;
   opacity:0;animation:fadeUp 1s .8s var(--ease-out) forwards}
+/* balance the line break in CSS rather than with a &nbsp; in the copy, so the
+   text itself is never touched */
 .hero__honor-ko{display:block;font-family:var(--display-ko);font-weight:800;
-  font-size:clamp(23px,3.3vw,40px);line-height:1.28;color:var(--red);letter-spacing:.01em}
+  font-size:clamp(23px,3.3vw,40px);line-height:1.28;color:var(--red);letter-spacing:.01em;
+  text-wrap:balance}
 .hero__honor-en{display:block;font-family:var(--display-en);font-style:italic;
   font-size:clamp(14.5px,1.35vw,17.5px);line-height:1.6;color:var(--ink-mute);margin-top:11px}
 
@@ -282,7 +285,7 @@ body[data-lang="ko"] .hero__lede{font-family:var(--serif-ko)}
 .hero__enter:hover .hero__enter-line{width:78px;background:var(--red)}
 .hero__enter:hover .hero__enter-line::after{border-color:var(--red)}
 
-/* portrait plate — bleeds to the right edge */
+/* portrait plate, bleeds to the right edge */
 .hero__portrait{margin:0;position:relative;
   transform:translate3d(0,calc(var(--hp,0) * -128px),0) scale(calc(1 + var(--hp,0) * .05));
   will-change:transform}
@@ -315,14 +318,14 @@ body[data-lang="ko"] .hero__lede{font-family:var(--serif-ko)}
 /* Every section must be opaque. The cinematic ink canvas is position:fixed and
    paints below the sections but above the body background, so a transparent
    section would let the ink bleed through behind its text. Only .plate is
-   deliberately transparent — that is the window the ink shows through. */
+   deliberately transparent, that is the window the ink shows through. */
 .section{padding:clamp(80px,10.5vw,150px) 0;position:relative;background:var(--paper)}
 .section--alt{background:var(--paper-2)}
 .section--gallery{background:var(--paper-2)}
 
 .section__head{max-width:800px;margin:0 0 clamp(46px,6.5vw,78px)}
 
-/* 낙관 — the index presses in like a seal */
+/* 낙관, the index presses in like a seal */
 .section__index{display:inline-grid;place-items:center;width:48px;height:48px;margin-bottom:26px;
   font-family:var(--sans);font-size:13.5px;font-weight:700;letter-spacing:.02em;
   color:#fff;background:var(--red);border-radius:2px;
@@ -421,7 +424,7 @@ body[data-lang="ko"] .mini-card h3{font-family:var(--serif-ko);font-weight:700}
 body[data-lang="ko"] .mini-card p{font-family:var(--serif-ko)}
 
 /* =========================================================
-   Biography — staggered two-column, no boxes
+   Biography: staggered two-column, no boxes
    ========================================================= */
 .bio{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(38px,5vw,66px) clamp(44px,6vw,88px)}
 .bio__chapter{position:relative;padding-left:70px}
@@ -439,7 +442,7 @@ body[data-lang="ko"] .bio__chapter p{font-family:var(--serif-ko)}
 .bio__chapter strong{color:var(--ink);font-weight:600}
 
 /* =========================================================
-   Chronology — left rail, spine draws with scroll
+   Chronology: left rail, spine draws with scroll
    ========================================================= */
 .timeline-filters{display:none}
 .chip{font-family:var(--sans);font-size:12px;padding:8px 16px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);cursor:pointer;border-radius:2px}
@@ -481,7 +484,7 @@ body[data-lang="ko"] .tl__card p{font-family:var(--serif-ko)}
 .badge{display:none}
 
 /* =========================================================
-   Activism — constellation
+   Activism: constellation
    ========================================================= */
 .network{margin:clamp(48px,6vw,74px) 0 clamp(38px,5vw,60px);display:grid;grid-template-columns:1.4fr .9fr;gap:34px;align-items:center}
 .network__cap{grid-column:1/-1;font-family:var(--sans);font-size:11.5px;letter-spacing:.06em;
@@ -542,7 +545,7 @@ body[data-lang="ko"] .quote-feature__text{font-family:var(--display-ko);font-sty
   font-size:clamp(21px,2.5vw,33px);line-height:1.46}
 
 /* =========================================================
-   His Words — ink chapter, no boxes
+   His Words: ink chapter, no boxes
    ========================================================= */
 .words-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(40px,5vw,72px) clamp(40px,6vw,80px);
   margin-top:clamp(12px,2vw,24px)}
@@ -617,12 +620,12 @@ body[data-lang="ko"] .footer__note{font-family:var(--serif-ko)}
   transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
 .reveal.is-in{opacity:1;transform:none}
 
-/* mask wipe — for headings, plates and quotes */
+/* mask wipe, for headings, plates and quotes */
 .reveal[data-anim="wipe"]{opacity:1;transform:none;clip-path:inset(0 0 102% 0);
   transition:clip-path 1.15s var(--ease-out)}
 .reveal[data-anim="wipe"].is-in{clip-path:inset(0 0 -2% 0)}
 
-/* head — the seal stamps, the title rises line by line (see .ln), kicker follows.
+/* head, the seal stamps, the title rises line by line (see .ln), kicker follows.
    No clip-path on the title: the per-line masks already do that job, and
    stacking both double-masks it. */
 .reveal[data-anim="head"]{opacity:1;transform:none;transition:none}
@@ -631,7 +634,7 @@ body[data-lang="ko"] .footer__note{font-family:var(--serif-ko)}
 .reveal[data-anim="head"].is-in .section__kicker{opacity:1;transform:none}
 
 /* =========================================================
-   Gallery — plates that settle, with in-frame drift
+   Gallery: plates that settle, with in-frame drift
    ========================================================= */
 .gallery{columns:3 248px;column-gap:clamp(18px,2.4vw,30px);margin-top:clamp(34px,5vw,56px)}
 .gallery__item{break-inside:avoid;margin:0 0 clamp(18px,2.4vw,30px)}
@@ -824,7 +827,7 @@ body[data-lang="ko"] .film__item-title{font-family:var(--serif-ko)}
 /* =========================================================
    CINEMATIC LAYER
    Line reveals, scroll parallax, chapter curtains, progress ring.
-   Everything here is transform/opacity/clip only — no layout thrash.
+   Everything here is transform/opacity/clip only, no layout thrash.
    ========================================================= */
 
 /* ---- continuous ambient motion ----
@@ -851,7 +854,7 @@ body[data-lang="ko"] .film__item-title{font-family:var(--serif-ko)}
   animation:sealPress .75s .05s var(--ease-out) forwards,
             sealPulse 4s 1.2s ease-out infinite}
 .node{animation:nodeFloat 6.5s ease-in-out infinite}
-/* deliberately NOT .hero__eyebrow::before — its `animation` already carries
+/* deliberately NOT .hero__eyebrow::before, its `animation` already carries
    ruleIn, and a second animation shorthand would replace it, leaving the rule
    stuck at scaleX(0) */
 .idea.is-in::before,.wordcard.is-in::before{
@@ -878,7 +881,7 @@ body.is-ready .hero__honor-ko .ln__i{transform:none;transition-delay:.85s}
 /* ---- chapter curtain: the ground drops away and a rule sweeps the top edge ----
    Fails SAFE. The default state below is the lit one, so a page with no JS, a
    dead IntersectionObserver or a thrown script still shows a readable dark
-   chapter. Script adds .is-veiled to cover it, then removes it on entry —
+   chapter. Script adds .is-veiled to cover it, then removes it on entry 
    the veil only ever exists while the machinery is demonstrably working. */
 .section--dark,.section--words{overflow:hidden}
 .section--dark::before,.section--words::before{
@@ -932,7 +935,7 @@ body.is-ready .hero__honor-ko .ln__i{transform:none;transition-delay:.85s}
 /* ---- scroll-velocity lean ----
    --vel (-1…1) and --velabs are written every frame by scrollFX(); the page
    leans into a fast flick and springs back when it stops. The lean is folded
-   into transforms these elements ALREADY own — never declared standalone,
+   into transforms these elements ALREADY own, never declared standalone,
    because a second transform rule just silently overwrites the first. And
    never on an ancestor of .factcard or a .plate, since a transformed ancestor
    breaks position:sticky. */
@@ -958,7 +961,7 @@ body.is-ready .hero__honor-ko .ln__i{transform:none;transition-delay:.85s}
    that track, written by cinema.js, and everything inside is driven by it.
    ========================================================= */
 
-/* the procedural ink field — one fixed quad behind the plates */
+/* the procedural ink field, one fixed quad behind the plates */
 .cinema{position:fixed;inset:0;width:100%;height:100%;z-index:0;
   pointer-events:none;opacity:0;display:block}
 /* if WebGL is missing, a static wash stands in so the plates aren't bare */
@@ -975,7 +978,7 @@ body.no-cinema-gl .plate__sticky{
 /* content sits above the fixed canvas */
 .plate__inner{position:relative;z-index:3;max-width:min(1100px,88vw);
   padding-inline:var(--gut);text-align:center;
-  /* drifts up through the whole plate — the camera move */
+  /* drifts up through the whole plate, the camera move */
   transform:translate3d(0,calc((0.5 - var(--pp,0)) * 90px),0)}
 
 .plate__year{display:block;font-family:var(--display-en);font-weight:400;
@@ -983,7 +986,7 @@ body.no-cinema-gl .plate__sticky{
   color:transparent;-webkit-text-stroke:1px rgba(244,238,228,.42);
   /* scales up and fades as you pass through */
   transform:scale(calc(0.86 + var(--pp,0) * 0.30));
-  /* no transition on scroll-driven values — it lags the scrub and feels rubbery */
+  /* no transition on scroll-driven values, it lags the scrub and feels rubbery */
   opacity:calc(0.62 - var(--pp,0) * 0.42)}
 .plate--photo .plate__year{display:none}
 
@@ -1012,8 +1015,8 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
   transform:scaleX(var(--pp,0))}
 
 /* ---- archival photo plate ----
-   The source is 600px wide, so it is deliberately treated as film — duotone,
-   grain and contrast — rather than presented as a sharp photograph. */
+   The source is 600px wide, so it is deliberately treated as film, duotone,
+   grain and contrast, rather than presented as a sharp photograph. */
 .plate__photo{position:absolute;inset:0;z-index:1;overflow:hidden}
 .plate__photo img{width:100%;height:100%;object-fit:cover;object-position:50% 55%;
   /* slow push-in across the plate: the Ken Burns move */
@@ -1031,12 +1034,12 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
    shader has its own vignette and the liberation plate needs to blow out */
 .plate__sticky::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(125% 95% at 50% 50%, transparent 45%, rgba(10,8,6,.38))}
-/* a soft pool of ink directly under the type — measured contrast insurance,
+/* a soft pool of ink directly under the type, measured contrast insurance,
    because the ink field's luminance is procedural and not fully predictable */
 .plate__sticky::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
   background:radial-gradient(58% 42% at 50% 52%, rgba(8,6,5,.5), transparent 72%)}
 
-/* LIBERATION — a hard cut from the black cell plate to a field of light.
+/* LIBERATION, a hard cut from the black cell plate to a field of light.
    Two fade-based versions were built and measured first: ramping the text
    cream→ink hit 2.1:1 at the crossover, and holding an ink pool under cream
    text hit 2.2:1 at full bloom. Whichever colour the text is, a background
@@ -1060,7 +1063,7 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
 }
 
 /* =========================================================
-   Reduced motion — everything resolves to its final state
+   Reduced motion: everything resolves to its final state
    ========================================================= */
 @media (prefers-reduced-motion:reduce){
   .reveal,.reveal[data-anim="wipe"],
@@ -1099,7 +1102,7 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
   .section--dark::after,.section--words::after{transform:scaleY(0)!important}
   .section--dark::before,.section--words::before{transform:scaleX(1)!important}
   .to-top{background:var(--paper)!important;border-color:var(--line)!important}
-  /* plates: no camera move, no push-in — content simply present and legible */
+  /* plates: no camera move, no push-in, content simply present and legible */
   .plate{height:auto}
   .plate__sticky{position:relative;height:auto;min-height:70svh;padding:14vh 0}
   .plate__inner{transform:none!important}
