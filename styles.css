@@ -1018,8 +1018,11 @@ body.no-cinema-gl .plate__sticky{
     radial-gradient(70% 55% at 50% 42%, rgba(155,44,28,.16), transparent 70%),
     linear-gradient(180deg,#1b1712,#0d0b09)}
 
-.plate{position:relative;height:250vh;background:transparent;z-index:1}
-.plate--photo{height:200vh}
+/* Track length sets how far you must scroll to get through a plate. The
+   scrub needs enough travel to feel deliberate, but 250vh meant one and a
+   half extra screens per plate, four times over. */
+.plate{position:relative;height:155vh;background:transparent;z-index:1}
+.plate--photo{height:138vh}
 .plate__sticky{position:sticky;top:0;height:100svh;overflow:hidden;
   display:grid;place-items:center;isolation:isolate}
 
@@ -1054,9 +1057,11 @@ body[data-lang="ko"] .plate__title{font-family:var(--display-ko);font-weight:800
   text-shadow:0 4px 24px rgba(0,0,0,.6)}
 body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all}
 
-/* the title and copy wipe in over the first third of the track */
+/* The title and copy wipe in over the opening stretch of the track. The
+   multiplier is tied to the track length: with the shorter tracks the old
+   value of 4 finished inside a single wheel notch and read as a snap. */
 .plate__title,.plate__sub,.plate__eyebrow{
-  opacity:clamp(0, calc(var(--pp,0) * 4 - 0.15), 1)}
+  opacity:clamp(0, calc(var(--pp,0) * 2.9 - 0.12), 1)}
 
 .plate__rule{position:absolute;left:0;bottom:0;height:2px;width:100%;
   background:var(--red);transform-origin:left;z-index:4;
@@ -1104,8 +1109,8 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
   background:radial-gradient(125% 95% at 50% 50%, transparent 48%, rgba(255,244,224,.30))}
 
 @media (max-width:760px){
-  .plate{height:240vh}
-  .plate--photo{height:200vh}
+  .plate{height:132vh}
+  .plate--photo{height:122vh}
   .plate__year{font-size:clamp(84px,34vw,190px)}
   .plate__sub{font-size:15px}
 }
