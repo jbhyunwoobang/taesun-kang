@@ -7,12 +7,85 @@
   const $$ = (s, c = document) => Array.from(c.querySelectorAll(s));
   const body = document.body;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 
   /* ---------- Preloader ---------- */
-  window.addEventListener("load", () => {
+  (function preloader() {
     const pre = $("#preloader");
-    if (pre) setTimeout(() => pre.classList.add("is-done"), 550);
-  });
+    if (!pre) return;
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      pre.classList.add("is-done");
+      // releases the hero entrance, which is held paused until the curtain lifts
+      body.classList.add("is-ready");
+    };
+    window.addEventListener("load", () => setTimeout(finish, reduce ? 0 : 360));
+    // never strand the page behind the curtain if `load` is slow or never fires
+    setTimeout(finish, 2600);
+  })();
+
+  /* ---------- Line splitting ----------
+     Wraps each rendered line in an overflow-clipped box so the line can slide
+     up from behind its own edge. Only ever applied to plain-text elements —
+     anything with inline markup would lose it. Re-runs after a language swap
+     (applyLang rewrites innerHTML) and after a resize (lines re-wrap). */
+  const LINE_TARGETS = ".section__title,.quote-feature__text,.wordcard__ko,.hero__honor-ko";
+
+  function splitLines(el) {
+    const raw = el.dataset.raw || el.textContent;
+    if (!raw.trim()) return;
+    el.dataset.raw = raw;
+
+    // 1. lay the text out as individual words so we can read their line boxes
+    el.textContent = "";
+    const words = raw.trim().split(/\s+/);
+    words.forEach((w, i) => {
+      const s = document.createElement("span");
+      s.textContent = w;
+      el.appendChild(s);
+      if (i < words.length - 1) el.appendChild(document.createTextNode(" "));
+    });
+
+    // 2. group the words by the line box they landed on
+    const lines = [];
+    let top = null, cur = null;
+    Array.from(el.children).forEach((s) => {
+      if (top === null || Math.abs(s.offsetTop - top) > 2) {
+        top = s.offsetTop; cur = []; lines.push(cur);
+      }
+      cur.push(s.textContent);
+    });
+
+    // 3. rebuild as one clipped box per line
+    el.textContent = "";
+    lines.forEach((group, i) => {
+      const line = document.createElement("span");
+      line.className = "ln";
+      const inner = document.createElement("span");
+      inner.className = "ln__i";
+      inner.style.transitionDelay = i * 90 + "ms";
+      inner.textContent = group.join(" ");
+      line.appendChild(inner);
+      el.appendChild(line);
+      // the break used to be a space; keep one in the text so copying the
+      // quote doesn't run the words together ("정신을버려야"). Whitespace
+      // between block boxes collapses, so nothing is rendered.
+      if (i < lines.length - 1) el.appendChild(document.createTextNode(" "));
+    });
+  }
+
+  function applySplits() {
+    if (reduce) return;
+    $$(LINE_TARGETS).forEach((el) => {
+      splitLines(el);
+      // a re-split wipes the revealed state off the new nodes; restore it
+      const host = el.closest(".reveal");
+      if (host && host.classList.contains("is-in")) el.classList.add("is-in");
+    });
+  }
+
 
   /* ---------- Language toggle (EN / KO) ---------- */
   const STORE_LANG = "kts-lang";
@@ -26,11 +99,14 @@
       // allow inline markup authored in the data-* attribute
       if (/[<&]/.test(val)) el.innerHTML = val;
       else el.textContent = val;
+      // the cached pre-split text belongs to the outgoing language
+      delete el.dataset.raw;
     });
     // OG locale hint
     const og = $('meta[property="og:locale"]');
     if (og) og.setAttribute("content", lang === "ko" ? "ko_KR" : "en_US");
     try { localStorage.setItem(STORE_LANG, lang); } catch (e) {}
+    if (typeof applySplits === "function") applySplits();
   }
 
   function initLang() {
@@ -52,6 +128,24 @@
   });
 
   initLang();
+
+  /* ---------- Split the hero name into per-character cells ----------
+     Only runs on elements without .i18n — applyLang() rewrites i18n
+     nodes wholesale and would discard the spans. */
+  $$("[data-split]").forEach((el) => {
+    if (el.classList.contains("i18n")) return;
+    const chars = Array.from(el.textContent.trim());
+    el.textContent = "";
+    // no aria-hidden / aria-label: the spans still hold real text nodes, so the
+    // heading keeps its accessible name without needing a labelling workaround
+    chars.forEach((c, i) => {
+      const s = document.createElement("span");
+      s.className = "ch";
+      s.textContent = c;
+      s.style.animationDelay = (0.2 + i * 0.1).toFixed(2) + "s";
+      el.appendChild(s);
+    });
+  });
 
   /* ---------- Smooth scroll + mobile menu ---------- */
   const nav = $("#nav");
@@ -97,8 +191,6 @@
 
     toTop?.classList.toggle("is-visible", y > 700);
   }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
 
   toTop?.addEventListener("click", () =>
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" })
@@ -124,7 +216,17 @@
   );
   sections.forEach((s) => spy.observe(s));
 
-  /* ---------- Reveal on scroll ---------- */
+  /* ---------- Reveal on scroll ----------
+     Variants live in CSS via [data-anim]; JS only decides *when*. */
+  // stagger siblings inside a grid so a row arrives as a phrase, not a block
+  [".gallery", ".words-grid", ".idea-grid", ".bio"].forEach((sel) => {
+    $$(sel).forEach((group) => {
+      $$(":scope > .reveal", group).forEach((el, i) => {
+        el.style.transitionDelay = Math.min(i, 5) * 80 + "ms";
+      });
+    });
+  });
+
   const revealer = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((en) => {
@@ -134,41 +236,122 @@
         }
       });
     },
-    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
   );
-  $$(".reveal").forEach((el, i) => {
-    // light stagger within a row
-    el.style.transitionDelay = (i % 4) * 70 + "ms";
-    revealer.observe(el);
-  });
+  $$(".reveal").forEach((el) => revealer.observe(el));
 
-  /* ---------- Animated counters ---------- */
-  const counters = $$("[data-count]");
-  const cObs = new IntersectionObserver(
-    (entries, obs) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        const el = en.target;
-        const end = parseInt(el.getAttribute("data-count"), 10);
-        const start = end - 90; // animate the last stretch of years for a ticking feel
-        obs.unobserve(el);
-        if (reduce || document.hidden) { el.textContent = end; return; }
-        const dur = 1300, t0 = performance.now();
-        function tick(now) {
-          const p = Math.min((now - t0) / dur, 1);
-          const eased = 1 - Math.pow(1 - p, 3);
-          el.textContent = Math.floor(start + (end - start) * eased);
-          if (p < 1) requestAnimationFrame(tick);
-          else el.textContent = end;
-        }
-        requestAnimationFrame(tick);
-        // safety net: guarantee the correct final value even if rAF is throttled/paused
-        setTimeout(() => { el.textContent = end; }, dur + 250);
-      });
-    },
-    { threshold: 0.6 }
-  );
-  counters.forEach((c) => cObs.observe(c));
+  /* Ink chapters: the paper sheet peels away as the section arrives.
+     Fires earlier than the content reveals so the ground is dark by the
+     time anything needs to be read against it. */
+  const chapters = $$(".section--dark,.section--words");
+  if (chapters.length && !reduce && "IntersectionObserver" in window) {
+    const unveil = (el) => el.classList.remove("is-veiled");
+    const veiler = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          unveil(en.target);
+          obs.unobserve(en.target);
+        });
+      },
+      { rootMargin: "-8% 0px -20% 0px", threshold: 0 }
+    );
+    chapters.forEach((s) => {
+      // only veil what is still well below the fold — anything already on
+      // screen must never be covered up
+      if (s.getBoundingClientRect().top > window.innerHeight * 0.9) {
+        s.classList.add("is-veiled");
+      }
+      veiler.observe(s);
+      // belt and braces: if the observer never delivers, drop the veil anyway
+      setTimeout(() => unveil(s), 12000);
+    });
+  }
+
+  // the constellation draws itself once the figure is on screen
+  const netFig = $(".network");
+  if (netFig) {
+    new IntersectionObserver(
+      (en, obs) => {
+        if (en[0].isIntersecting) { netFig.classList.add("is-in"); obs.disconnect(); }
+      },
+      { threshold: 0.25 }
+    ).observe(netFig);
+  }
+
+  /* ---------- Scroll-linked motion ----------
+     One rAF-throttled pass: hero parallax, chronology spine, gallery drift. */
+  const hero = $(".hero");
+  const tlList = $("#timelineList");
+  const galleryImgs = $$(".gallery__frame img");
+  // [element, travel-in-px] — negative travel moves against the scroll
+  const drifters = [];
+  $$(".section__head").forEach((el) => drifters.push([el, -46]));
+  $$(".wordcard__ko").forEach((el) => drifters.push([el, -34]));
+  $$(".factcard").forEach((el) => drifters.push([el, -22]));
+  $$(".film__stage").forEach((el) => drifters.push([el, -26]));
+
+  function scrollFX() {
+    const vh = window.innerHeight;
+
+    if (hero) {
+      const hh = hero.offsetHeight || vh;
+      hero.style.setProperty("--hp", clamp(window.scrollY / hh, 0, 1).toFixed(4));
+    }
+
+    if (tlList) {
+      const r = tlList.getBoundingClientRect();
+      // the spine is drawn to wherever a reading eye would be — 60% down the viewport
+      const p = clamp((vh * 0.6 - r.top) / (r.height || 1), 0, 1);
+      tlList.style.setProperty("--tl-p", p.toFixed(4));
+    }
+
+    // in-frame photo drift: the plate holds still while the image breathes inside it
+    for (let i = 0; i < galleryImgs.length; i++) {
+      const img = galleryImgs[i];
+      const r = img.getBoundingClientRect();
+      if (r.bottom < -200 || r.top > vh + 200) continue;  // offscreen: skip
+      const centre = (r.top + r.height / 2) / vh;          // 0 top … 1 bottom
+      img.style.setProperty("--drift", ((centre - 0.5) * 34).toFixed(2) + "px");
+    }
+
+    // everything else moves a little slower than the page, which reads as depth
+    for (let i = 0; i < drifters.length; i++) {
+      const el = drifters[i][0], travel = drifters[i][1];
+      const r = el.getBoundingClientRect();
+      if (r.bottom < -240 || r.top > vh + 240) continue;
+      const centre = (r.top + r.height / 2) / vh;
+      el.style.setProperty("--par", ((centre - 0.5) * travel).toFixed(2) + "px");
+    }
+
+    // reading progress, drawn as a ring around the back-to-top button
+    if (toTop) {
+      const h = document.documentElement.scrollHeight - vh;
+      toTop.style.setProperty("--ring", (h > 0 ? (window.scrollY / h) * 100 : 0).toFixed(1));
+    }
+  }
+
+  let ticking = false;
+  function onScrollAll() {
+    onScroll();
+    if (reduce || ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { scrollFX(); ticking = false; });
+  }
+  window.addEventListener("scroll", onScrollAll, { passive: true });
+  window.addEventListener("resize", onScrollAll, { passive: true });
+  onScroll();
+  if (!reduce) scrollFX();
+
+  /* Lines are grouped by measured position, so they must be re-measured once
+     the webfonts land and again whenever the text re-wraps. */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(applySplits);
+  window.addEventListener("load", applySplits);
+  let reSplit;
+  window.addEventListener("resize", () => {
+    clearTimeout(reSplit);
+    reSplit = setTimeout(applySplits, 220);
+  }, { passive: true });
 
   /* ---------- Timeline filter ---------- */
   const chips = $$(".chip");
@@ -194,16 +377,20 @@
   function drawLinks() {
     if (!stage || !linksSvg) return;
     const rect = stage.getBoundingClientRect();
+    if (!rect.width) return;
     linksSvg.setAttribute("viewBox", `0 0 ${rect.width} ${rect.height}`);
     const center = $(".node--center", stage);
     if (!center) return;
     const cx = (parseFloat(center.style.left) / 100) * rect.width;
     const cy = (parseFloat(center.style.top) / 100) * rect.height;
     let html = "";
-    $$(".node:not(.node--center)", stage).forEach((n) => {
+    $$(".node:not(.node--center)", stage).forEach((n, i) => {
       const x = (parseFloat(n.style.left) / 100) * rect.width;
       const y = (parseFloat(n.style.top) / 100) * rect.height;
-      html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" />`;
+      // each thread grows outward from Kang at the centre
+      html +=
+        `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" ` +
+        `style="transform-origin:${cx}px ${cy}px;transition-delay:${120 + i * 90}ms" />`;
     });
     linksSvg.innerHTML = html;
   }
@@ -231,26 +418,6 @@
     setTimeout(drawLinks, 400);
     window.addEventListener("load", drawLinks);
   }
-
-  /* ---------- Neon dynamic background ---------- */
-  (function neonFX() {
-    const aurora = document.createElement("div");
-    aurora.className = "neon-aurora"; aurora.setAttribute("aria-hidden", "true");
-    const spot = document.createElement("div");
-    spot.className = "neon-spot"; spot.setAttribute("aria-hidden", "true");
-    body.prepend(spot); body.prepend(aurora);
-    if (reduce) return;
-    let raf = 0, mx = 50, my = 26;
-    window.addEventListener("pointermove", (e) => {
-      mx = (e.clientX / window.innerWidth) * 100;
-      my = (e.clientY / window.innerHeight) * 100;
-      if (!raf) raf = requestAnimationFrame(() => {
-        spot.style.setProperty("--mx", mx + "%");
-        spot.style.setProperty("--my", my + "%");
-        raf = 0;
-      });
-    }, { passive: true });
-  })();
 
   /* ---------- Lightbox ---------- */
   const lightbox = $("#lightbox");

@@ -21,31 +21,33 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Serif:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=15" />
+<link rel="stylesheet" href="styles.css?v=20" />
+
+<!-- Without JS nothing would lift the preloader or trip the scroll reveals,
+     so resolve every animated element to its final state. -->
+<noscript><style>
+  .preloader{display:none!important}
+  .reveal,.reveal[data-anim="wipe"],.reveal[data-anim="head"] .section__title,
+  .reveal[data-anim="head"] .section__kicker,.gallery__frame,.gallery__frame img,
+  .stat__num,.stat__label{opacity:1!important;transform:none!important;clip-path:none!important}
+  .section__index{opacity:1!important;transform:rotate(-2.5deg)!important;animation:none!important}
+  .hero__eyebrow::before,.hero__name-ko,.hero__name-hanja,.hero__roman,.hero__honor,
+  .hero__lede,.hero__enter,.hero__portrait-ring,.hero__portrait-ring img,
+  .hero__portrait-cap,.hero__scroll{animation:none!important;opacity:1!important;
+    transform:none!important;clip-path:none!important}
+  .timeline::after{transform:scaleY(1)!important}
+  .stat-strip::after,.quote-feature__bar{transform:none!important}
+  .idea::before{width:52px!important}.wordcard::before{width:64px!important}
+  .network__links line{transform:none!important}
+  .tl,.tl__meta,.tl__card,.bio__chapter,.idea,.section__head,.wordcard__ko,
+  .factcard,.film__stage{transform:none!important;opacity:1!important}
+  .section--dark::after,.section--words::after{transform:scaleY(0)!important}
+  .section--dark::before,.section--words::before{transform:scaleX(1)!important}
+</style></noscript>
 </head>
-<body data-lang="en" data-theme="dark">
-
-<!-- ===== SVG filters (illustration treatment) ===== -->
-<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
-  <defs>
-    <filter id="illustrate" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
-      <!-- light denoise only: knock back JPEG speckle without losing facial detail -->
-      <feGaussianBlur stdDeviation="0.5" result="soft" />
-      <feColorMatrix in="soft" type="saturate" values="0.55" result="muted" />
-      <!-- many bands for smooth gradation -->
-      <feComponentTransfer in="muted" result="poster">
-        <feFuncR type="discrete" tableValues="0.16 0.30 0.42 0.53 0.63 0.72 0.81 0.90 1" />
-        <feFuncG type="discrete" tableValues="0.11 0.24 0.36 0.47 0.57 0.67 0.76 0.85 0.94" />
-        <feFuncB type="discrete" tableValues="0.07 0.18 0.29 0.39 0.49 0.59 0.69 0.79 0.88" />
-      </feComponentTransfer>
-      <!-- unsharp: crisp the region edges for a clean illustrated look (kernel sums to 1) -->
-      <feConvolveMatrix order="3" preserveAlpha="true"
-        kernelMatrix="0 -0.65 0  -0.65 3.6 -0.65  0 -0.65 0" />
-    </filter>
-  </defs>
-</svg>
+<body data-lang="en">
 
 <!-- ===== Reading progress ===== -->
 <div class="reading-progress" id="readingProgress" aria-hidden="true"></div>
@@ -109,38 +111,42 @@
   <section class="hero" id="hero">
     <div class="hero__bg" aria-hidden="true">
       <div class="hero__taegukgi"></div>
-      <div class="hero__grain"></div>
-      <div class="hero__vignette"></div>
+      <div class="hero__wash"></div>
     </div>
-    <div class="hero__content">
+
+    <div class="hero__grid">
+      <div class="hero__type">
+        <p class="hero__eyebrow i18n" data-en="Jeju-born Korean Independence Activist · 1924–present" data-ko="제주 출신 독립운동가 · 1924년 출생">Jeju-born Korean Independence Activist · 1924–present</p>
+        <h1 class="hero__name">
+          <span class="hero__name-ko" data-split>강태선</span>
+          <span class="hero__name-hanja">姜太善</span>
+        </h1>
+        <p class="hero__roman i18n" data-en="Kang Tae-sun" data-ko="Kang Tae-sun">Kang Tae-sun</p>
+        <p class="hero__honor">
+          <span class="hero__honor-ko i18n" data-en="The Last Independence Activist of&nbsp;Jeju" data-ko="제주의 마지막 독립운동가">The Last Independence Activist of&nbsp;Jeju</span>
+          <span class="hero__honor-en i18n" data-en="Jeju's only living, officially recognized patriot of the Korean independence movement" data-ko="제주 유일의 생존 독립유공자">Jeju's only living, officially recognized patriot of the Korean independence movement</span>
+        </p>
+        <p class="hero__lede i18n"
+           data-en="A clandestine nationalist in wartime Osaka, who turned fear and rumor into the hope of independence — Jeju's only living recognized independence patriot."
+           data-ko="전쟁 시기 오사카에서 일제에 맞서 싸우신 민족주의자. 두려움과 떠도는 소문을 독립의 희망으로 바꾸신, 제주 유일의 생존 독립유공자이십니다.">
+          A clandestine nationalist in wartime Osaka, who turned fear and rumor into the hope of independence — Jeju's only living recognized independence patriot.
+        </p>
+        <a href="#overview" data-scroll class="hero__enter">
+          <span class="i18n" data-en="Begin the story" data-ko="이야기 시작하기">Begin the story</span>
+          <span class="hero__enter-line" aria-hidden="true"></span>
+        </a>
+      </div>
+
       <figure class="hero__portrait">
         <div class="hero__portrait-ring">
           <img src="assets/kang-portrait.jpg" alt="Portrait of Kang Tae-sun at his home in Jeju" width="600" height="667" loading="eager" />
         </div>
-        <span class="hero__portrait-mark" aria-hidden="true">
-          <svg viewBox="0 0 100 100" width="30" height="30"><path d="M50 14a36 36 0 0 1 0 72 18 18 0 0 0 0-36 18 18 0 0 1 0-36z" fill="#cd2e3a"/><path d="M50 14a36 36 0 0 0 0 72 18 18 0 0 1 0-36 18 18 0 0 0 0-36z" fill="#0047a0"/></svg>
-        </span>
+        <figcaption class="hero__portrait-cap i18n"
+          data-en="At his home in Siheung-ri, Jeju · Jeju &amp; People, 2021"
+          data-ko="제주 시흥리 자택에서 · 제주와인물, 2021">At his home in Siheung-ri, Jeju · Jeju &amp; People, 2021</figcaption>
       </figure>
-      <p class="hero__eyebrow i18n" data-en="Jeju-born Korean Independence Activist · 1924–present" data-ko="제주 출신 독립운동가 · 1924년 출생">Jeju-born Korean Independence Activist · 1924–present</p>
-      <h1 class="hero__name">
-        <span class="hero__name-ko">강태선</span>
-        <span class="hero__name-hanja">姜太善</span>
-      </h1>
-      <p class="hero__roman i18n" data-en="Kang Tae-sun" data-ko="Kang Tae-sun · 강태선">Kang Tae-sun</p>
-      <p class="hero__quote hero__honor">
-        <span class="hero__quote-ko i18n" data-en="The Last Independence Activist of Jeju" data-ko="제주의 마지막 독립운동가">The Last Independence Activist of Jeju</span>
-        <span class="hero__quote-en i18n" data-en="Jeju's only living, officially recognized patriot of the Korean independence movement" data-ko="제주 유일의 생존 독립유공자">Jeju's only living, officially recognized patriot of the Korean independence movement</span>
-      </p>
-      <p class="hero__lede i18n"
-         data-en="A clandestine nationalist in wartime Osaka, who turned fear and rumor into the hope of independence — Jeju's only living recognized independence patriot."
-         data-ko="전쟁 시기 오사카에서 일제에 맞서 싸우신 민족주의자. 두려움과 떠도는 소문을 독립의 희망으로 바꾸신, 제주 유일의 생존 독립유공자이십니다.">
-        A clandestine nationalist in wartime Osaka, who turned fear and rumor into the hope of independence — Jeju's only living recognized independence patriot.
-      </p>
-      <div class="hero__cta">
-        <a href="#overview" data-scroll class="btn btn--solid i18n" data-en="Begin the story" data-ko="이야기 시작하기">Begin the story</a>
-        <a href="#timeline" data-scroll class="btn btn--ghost i18n" data-en="Jump to timeline" data-ko="연표 보기">Jump to timeline</a>
-      </div>
     </div>
+
     <a href="#overview" data-scroll class="hero__scroll" aria-label="Scroll down">
       <span class="i18n" data-en="Scroll" data-ko="아래로">Scroll</span>
       <span class="hero__scroll-line" aria-hidden="true"></span>
@@ -150,7 +156,7 @@
   <!-- ===== OVERVIEW ===== -->
   <section class="section section--overview" id="overview">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">01</span>
         <h2 class="section__title i18n" data-en="Executive Summary" data-ko="개요">Executive Summary</h2>
         <p class="section__kicker i18n" data-en="Who he was, in one breath" data-ko="한눈에 보는 인물">Who he was, in one breath</p>
@@ -187,10 +193,10 @@
         </aside>
       </div>
 
-      <div class="stat-strip reveal">
-        <div class="stat"><span class="stat__num" data-count="1924">1924</span><span class="stat__label i18n" data-en="Born in Jeju" data-ko="제주 출생">Born in Jeju</span></div>
-        <div class="stat"><span class="stat__num" data-count="1944">1944</span><span class="stat__label i18n" data-en="Sentenced in Osaka" data-ko="오사카 선고">Sentenced in Osaka</span></div>
-        <div class="stat"><span class="stat__num" data-count="1990">1990</span><span class="stat__label i18n" data-en="Aejok Medal" data-ko="애족장 수훈">Aejok Medal</span></div>
+      <div class="stat-strip reveal" data-anim="rule">
+        <div class="stat"><span class="stat__num">1924</span><span class="stat__label i18n" data-en="Born in Jeju" data-ko="제주 출생">Born in Jeju</span></div>
+        <div class="stat"><span class="stat__num">1944</span><span class="stat__label i18n" data-en="Sentenced in Osaka" data-ko="오사카 선고">Sentenced in Osaka</span></div>
+        <div class="stat"><span class="stat__num">1990</span><span class="stat__label i18n" data-en="Aejok Medal" data-ko="애족장 수훈">Aejok Medal</span></div>
         <div class="stat"><span class="stat__num">2026</span><span class="stat__label i18n" data-en="Still honoured in Jeju" data-ko="제주가 기리는 이름">Still honoured in Jeju</span></div>
       </div>
     </div>
@@ -199,7 +205,7 @@
   <!-- ===== LIFE / BIOGRAPHY ===== -->
   <section class="section" id="life">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">02</span>
         <h2 class="section__title i18n" data-en="Biography" data-ko="생애">Biography</h2>
         <p class="section__kicker i18n" data-en="From a Jeju village to an Osaka courtroom" data-ko="제주의 한 마을에서 오사카 법정까지">From a Jeju village to an Osaka courtroom</p>
@@ -254,97 +260,97 @@
   <!-- ===== TIMELINE ===== -->
   <section class="section section--dark" id="timeline">
     <div class="container">
-      <div class="section__head section__head--light reveal">
+      <div class="section__head section__head--light reveal" data-anim="head">
         <span class="section__index">03</span>
         <h2 class="section__title i18n" data-en="Chronology" data-ko="연표">Chronology</h2>
         <p class="section__kicker i18n" data-en="A life across two countries and an empire's fall" data-ko="두 나라, 그리고 한 제국의 몰락을 가로지른 생애">A life across two countries and an empire's fall</p>
       </div>
 
-      <ol class="timeline" id="timeline">
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1924 · 06</time></div>
+      <ol class="timeline" id="timelineList">
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1924<span class="tl__md">06</span></time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Born in Jeju" data-ko="제주에서 태어나다">Born in Jeju</h3>
             <p class="i18n" data-en="Born on 15 June in Siheung-ri, Seongsan, Jeju, the son of Kang Gyeong-hwan." data-ko="6월 15일, 제주 성산 시흥리에서 부친 강경환의 아들로 태어나셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1942</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1942</time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Crosses to Osaka" data-ko="오사카로 건너가다">Crosses to Osaka</h3>
             <p class="i18n" data-en="At eighteen, left Jeju for Osaka in wartime Japan, supporting himself by delivering newspapers while he studied." data-ko="열여덟 나이에 제주를 떠나 전쟁 시기의 일본 오사카로 건너가, 신문을 돌리며 힘겹게 공부하셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1942 · 08</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1942<span class="tl__md">08</span></time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Clandestine independence work" data-ko="비밀 독립운동">Clandestine independence work</h3>
             <p class="i18n" data-en="Formed a secret circle with comrades including Ji Won-ho and Sim Jong-bo, resisting assimilation and preparing for the day of independence." data-ko="지원호·심종보 등 동지들과 비밀 조직을 만들어, 일제의 동화 정책에 맞서며 독립의 날을 준비하셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1944 · 06</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1944<span class="tl__md">06</span></time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Arrested by Japanese police" data-ko="일제 경찰에 붙잡힘">Arrested by Japanese police</h3>
             <p class="i18n" data-en="Arrested by the Japanese police and severely tortured under interrogation." data-ko="일제 경찰에 붙잡혀 조사받는 동안 모진 고문을 당하셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1944 · 08 · 25</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1944<span class="tl__md">08 · 25</span></time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Sentenced — Osaka District Court" data-ko="오사카지방재판소 선고">Sentenced — Osaka District Court</h3>
             <p class="i18n" data-en="Convicted under the Peace Preservation Law and sentenced to two years and six months." data-ko="치안유지법 위반으로 징역 2년 6개월을 선고받으셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1945 · 08 · 15</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1945<span class="tl__md">08 · 15</span></time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Liberation — released" data-ko="광복 — 감옥에서 풀려남">Liberation — released</h3>
             <p class="i18n" data-en="Freed at Korea's liberation while imprisoned in Japan." data-ko="감옥에서 조국의 광복을 맞아 풀려나셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1946</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1946</time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Returns to Jeju" data-ko="제주로 돌아오다">Returns to Jeju</h3>
             <p class="i18n" data-en="Returned home to Jeju, where he has lived ever since." data-ko="고향 제주로 돌아오셨고, 이후 지금까지 제주에서 지내고 계십니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1982</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1982</time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Presidential Commendation" data-ko="대통령표창">Presidential Commendation</h3>
             <p class="i18n" data-en="Awarded a Presidential Commendation by the Republic of Korea." data-ko="대한민국 대통령표창을 받으셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>1990</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>1990</time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Order of Merit — Aejok Medal" data-ko="건국훈장 애족장">Order of Merit — Aejok Medal</h3>
             <p class="i18n" data-en="Awarded the Order of Merit for National Foundation, Aejok Medal." data-ko="건국훈장 애족장을 받으셨습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>2024 · 08</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>2024<span class="tl__md">08</span></time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Memorial stele unveiled" data-ko="기림비 제막">Memorial stele unveiled</h3>
             <p class="i18n" data-en="A memorial stele unveiled at his home in Siheung-ri, Jeju." data-ko="제주 시흥리 자택에 기림비가 세워졌습니다.">
           </div>
         </li>
-        <li class="tl">
-          <div class="tl__dot"></div>
-          <div class="tl__card reveal">
-            <div class="tl__meta"><time>2026</time></div>
+        <li class="tl reveal">
+          <div class="tl__meta"><time>2026</time></div>
+          <div class="tl__dot" aria-hidden="true"></div>
+          <div class="tl__card">
             <h3 class="i18n" data-en="Jeju's only living patriot" data-ko="제주 유일의 생존 독립유공자">Jeju's only living patriot</h3>
             <p class="i18n" data-en="Honoured as Jeju's only surviving independence patriot, visited by the Minister of Patriots and Veterans Affairs." data-ko="제주 유일의 생존 독립유공자로 기려지며, 국가보훈부 장관이 예방했습니다.">
           </div>
@@ -356,7 +362,7 @@
   <!-- ===== ACTIVISM / NETWORK ===== -->
   <section class="section" id="activism">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">04</span>
         <h2 class="section__title i18n" data-en="Activism, Networks &amp; Ideas" data-ko="활동·연결망·사상">Activism, Networks &amp; Ideas</h2>
         <p class="section__kicker i18n" data-en="Japan-based clandestine nationalist activism" data-ko="일본에서 비밀리에 벌인 독립 활동">Japan-based clandestine nationalist activism</p>
@@ -433,7 +439,7 @@
   <!-- ===== LEGACY ===== -->
   <section class="section section--alt" id="legacy">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">05</span>
         <h2 class="section__title i18n" data-en="Trials, Recognition &amp; Legacy" data-ko="재판·훈장·유산">Trials, Recognition &amp; Legacy</h2>
         <p class="section__kicker i18n" data-en="Recognition came late — then memory caught up" data-ko="뒤늦게 주어진 훈장, 그리고 뒤이어 시작된 기림">Recognition came late — then memory caught up</p>
@@ -464,7 +470,7 @@
   <!-- ===== HOME / GALLERY ===== -->
   <section class="section section--gallery" id="home">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">06</span>
         <h2 class="section__title i18n" data-en="His Home in Jeju, Today" data-ko="오늘의 제주 자택">His Home in Jeju, Today</h2>
         <p class="section__kicker i18n" data-en="A hundred years on — the house in Siheung-ri where the nation still comes to bow" data-ko="백 년의 세월 — 지금도 새해면 큰절을 올리러 찾아오는 시흥리의 집">A hundred years on — the house in Siheung-ri where the nation still comes to bow</p>
@@ -537,7 +543,7 @@
   <!-- ===== WORDS ===== -->
   <section class="section section--words" id="words">
     <div class="container">
-      <div class="section__head section__head--light reveal">
+      <div class="section__head section__head--light reveal" data-anim="head">
         <span class="section__index">07</span>
         <h2 class="section__title i18n" data-en="In His Own Words" data-ko="애국지사님이 남기신 말씀">In His Own Words</h2>
         <p class="section__kicker i18n" data-en="His voice, kept in testimony" data-ko="육성과 증언으로 남은 말씀">Reported quotation &amp; later oral testimony</p>
@@ -582,7 +588,7 @@
   <!-- ===== FILM / MOVING IMAGE ARCHIVE ===== -->
   <section class="section section--film" id="films">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">08</span>
         <h2 class="section__title i18n" data-en="Moving Image Archive" data-ko="영상 기록">Moving Image Archive</h2>
         <p class="section__kicker i18n" data-en="A living patriot, captured on camera" data-ko="카메라에 담긴 생존 애국지사님">A living patriot, captured on camera</p>
@@ -718,7 +724,7 @@
   <!-- ===== SOURCES ===== -->
   <section class="section" id="sources">
     <div class="container">
-      <div class="section__head reveal">
+      <div class="section__head reveal" data-anim="head">
         <span class="section__index">09</span>
         <h2 class="section__title i18n" data-en="Sources &amp; Reliability" data-ko="자료와 신뢰도">Sources &amp; Reliability</h2>
         <p class="section__kicker i18n" data-en="The record behind this history" data-ko="이 이야기를 뒷받침하는 자료">The record behind this history</p>
@@ -859,6 +865,6 @@
   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
-<script src="script.js?v=10"></script>
+<script src="script.js?v=14"></script>
 </body>
 </html>
