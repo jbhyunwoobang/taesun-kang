@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Serif:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=21" />
+<link rel="stylesheet" href="styles.css?v=25" />
 
 <!-- Without JS nothing would lift the preloader or trip the scroll reveals,
      so resolve every animated element to its final state. -->
@@ -45,6 +45,12 @@
   .factcard,.film__stage{transform:none!important;opacity:1!important}
   .section--dark::after,.section--words::after{transform:scaleY(0)!important}
   .section--dark::before,.section--words::before{transform:scaleX(1)!important}
+  .plate{height:auto}
+  .plate__sticky{position:relative;height:auto;min-height:70vh;padding:14vh 0;
+    background:linear-gradient(180deg,#1b1712,#0d0b09)}
+  .plate__inner,.plate__year{transform:none!important}
+  .plate__title,.plate__sub,.plate__eyebrow{opacity:1!important}
+  .plate__rule{transform:scaleX(1)!important}
 </style></noscript>
 </head>
 <body data-lang="en">
@@ -202,6 +208,25 @@
     </div>
   </section>
 
+  <!-- ===== PLATE I · THE CROSSING ===== -->
+  <section class="plate plate--crossing" aria-labelledby="plateCrossingTitle"
+           data-mood-from="0.58" data-mood-to="0.90"
+           data-energy-from="0.14" data-energy-to="0.52"
+           data-light-from="0.05" data-light-to="0">
+    <div class="plate__sticky">
+      <div class="plate__inner">
+        <span class="plate__year" aria-hidden="true">1942</span>
+        <h2 class="plate__title i18n" id="plateCrossingTitle"
+            data-en="Across the strait" data-ko="현해탄을 건너">Across the strait</h2>
+        <p class="plate__sub i18n"
+           data-en="At eighteen he left Jeju for wartime Osaka, delivering newspapers to pay for his own schooling."
+           data-ko="열여덟, 제주를 떠나 전시의 오사카로. 신문을 돌리며 스스로 벌어 공부를 이어 가셨습니다.">
+        </p>
+      </div>
+      <span class="plate__rule" aria-hidden="true"></span>
+    </div>
+  </section>
+
   <!-- ===== LIFE / BIOGRAPHY ===== -->
   <section class="section" id="life">
     <div class="container">
@@ -254,6 +279,25 @@
           </p>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- ===== PLATE II · THE CELL ===== -->
+  <section class="plate plate--cell" aria-labelledby="plateCellTitle"
+           data-mood-from="0.92" data-mood-to="1"
+           data-energy-from="0.46" data-energy-to="0.06"
+           data-light-from="0" data-light-to="0.07">
+    <div class="plate__sticky">
+      <div class="plate__inner">
+        <span class="plate__year" aria-hidden="true">1944</span>
+        <h2 class="plate__title i18n" id="plateCellTitle"
+            data-en="Two years and six months" data-ko="징역 2년 6개월">Two years and six months</h2>
+        <p class="plate__sub i18n"
+           data-en="Convicted under the Peace Preservation Law by the Osaka District Court, 25 August 1944. He was beaten and subjected to water torture under interrogation."
+           data-ko="1944년 8월 25일, 오사카지방재판소는 치안유지법 위반으로 형을 선고했습니다. 조사받는 동안 모진 매질과 물고문을 견디셨습니다.">
+        </p>
+      </div>
+      <span class="plate__rule" aria-hidden="true"></span>
     </div>
   </section>
 
@@ -356,6 +400,25 @@
           </div>
         </li>
       </ol>
+    </div>
+  </section>
+
+  <!-- ===== PLATE III · LIBERATION ===== -->
+  <section class="plate plate--liberation" aria-labelledby="plateLibTitle"
+           data-mood-from="0.14" data-mood-to="0.02"
+           data-energy-from="0.30" data-energy-to="0.52"
+           data-light-from="0.80" data-light-to="1.05">
+    <div class="plate__sticky">
+      <div class="plate__inner">
+        <span class="plate__year" aria-hidden="true">1945</span>
+        <h2 class="plate__title i18n" id="plateLibTitle"
+            data-en="Liberation" data-ko="광복">Liberation</h2>
+        <p class="plate__sub i18n"
+           data-en="15 August 1945. He was still in a Japanese prison when the country he had been convicted for imagining came into being."
+           data-ko="1945년 8월 15일. 상상했다는 이유로 형을 받으셨던 그 나라가 세워지던 날, 애국지사님은 아직 일본의 감옥에 계셨습니다.">
+        </p>
+      </div>
+      <span class="plate__rule" aria-hidden="true"></span>
     </div>
   </section>
 
@@ -464,6 +527,27 @@
         </p>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ===== PLATE IV · THE HOUSE (archival photo treatment) ===== -->
+  <section class="plate plate--photo" aria-labelledby="platePhotoTitle"
+           data-mood-from="0" data-mood-to="0" data-energy-from="0" data-energy-to="0"
+           data-light-from="0" data-light-to="0">
+    <div class="plate__sticky">
+      <div class="plate__photo" aria-hidden="true">
+        <img src="assets/house-exterior.jpg" alt="" loading="lazy" width="600" height="368" />
+      </div>
+      <div class="plate__inner plate__inner--photo">
+        <span class="plate__eyebrow i18n" data-en="Siheung-ri, Seongsan-eup" data-ko="성산읍 시흥리">Siheung-ri, Seongsan-eup</span>
+        <h2 class="plate__title i18n" id="platePhotoTitle"
+            data-en="He is still there" data-ko="그는 지금도 그곳에 계십니다">He is still there</h2>
+        <p class="plate__sub i18n"
+           data-en="A low Jeju farmhouse of basalt walls and grey tile. Each Lunar New Year the island's governor travels here to bow."
+           data-ko="검은 돌담과 회색 기와를 인 나지막한 제주 시골집. 해마다 설이면 도지사가 이곳을 찾아 큰절을 올립니다.">
+        </p>
+      </div>
+      <span class="plate__rule" aria-hidden="true"></span>
     </div>
   </section>
 
@@ -865,6 +949,7 @@
   <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
 
-<script src="script.js?v=16"></script>
+<script src="script.js?v=17"></script>
+<script src="cinema.js?v=3"></script>
 </body>
 </html>
