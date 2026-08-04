@@ -288,46 +288,56 @@
   const drifters = [];
   $$(".section__head").forEach((el) => drifters.push([el, -46]));
   $$(".wordcard__ko").forEach((el) => drifters.push([el, -34]));
-  $$(".factcard").forEach((el) => drifters.push([el, -22]));
   $$(".film__stage").forEach((el) => drifters.push([el, -26]));
+  // deliberately not the factcard: it is position:sticky, and drifting it
+  // while it is pinned reads as jitter rather than depth
+
+  /* Every measurement is taken before any style is written. Interleaving the
+     two makes each read force a fresh layout, which is ~20 synchronous
+     reflows per frame on this page. Read pass, then write pass. */
+  const pending = [];
 
   function scrollFX() {
     const vh = window.innerHeight;
+    const y = window.scrollY;
+    const docH = document.documentElement.scrollHeight;
+    pending.length = 0;
 
+    /* ---- read pass ---- */
     if (hero) {
-      const hh = hero.offsetHeight || vh;
-      hero.style.setProperty("--hp", clamp(window.scrollY / hh, 0, 1).toFixed(4));
+      pending.push([hero, "--hp", clamp(y / (hero.offsetHeight || vh), 0, 1).toFixed(4)]);
     }
-
     if (tlList) {
       const r = tlList.getBoundingClientRect();
       // the spine is drawn to wherever a reading eye would be — 60% down the viewport
       const p = clamp((vh * 0.6 - r.top) / (r.height || 1), 0, 1);
-      tlList.style.setProperty("--tl-p", p.toFixed(4));
+      pending.push([tlList, "--tl-p", p.toFixed(4)]);
     }
-
     // in-frame photo drift: the plate holds still while the image breathes inside it
     for (let i = 0; i < galleryImgs.length; i++) {
       const img = galleryImgs[i];
       const r = img.getBoundingClientRect();
       if (r.bottom < -200 || r.top > vh + 200) continue;  // offscreen: skip
       const centre = (r.top + r.height / 2) / vh;          // 0 top … 1 bottom
-      img.style.setProperty("--drift", ((centre - 0.5) * 34).toFixed(2) + "px");
+      pending.push([img, "--drift", ((centre - 0.5) * 34).toFixed(2) + "px"]);
     }
-
     // everything else moves a little slower than the page, which reads as depth
     for (let i = 0; i < drifters.length; i++) {
       const el = drifters[i][0], travel = drifters[i][1];
       const r = el.getBoundingClientRect();
       if (r.bottom < -240 || r.top > vh + 240) continue;
       const centre = (r.top + r.height / 2) / vh;
-      el.style.setProperty("--par", ((centre - 0.5) * travel).toFixed(2) + "px");
+      pending.push([el, "--par", ((centre - 0.5) * travel).toFixed(2) + "px"]);
     }
-
     // reading progress, drawn as a ring around the back-to-top button
     if (toTop) {
-      const h = document.documentElement.scrollHeight - vh;
-      toTop.style.setProperty("--ring", (h > 0 ? (window.scrollY / h) * 100 : 0).toFixed(1));
+      const h = docH - vh;
+      pending.push([toTop, "--ring", (h > 0 ? (y / h) * 100 : 0).toFixed(1)]);
+    }
+
+    /* ---- write pass ---- */
+    for (let i = 0; i < pending.length; i++) {
+      pending[i][0].style.setProperty(pending[i][1], pending[i][2]);
     }
   }
 

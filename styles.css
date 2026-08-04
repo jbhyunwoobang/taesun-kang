@@ -835,8 +835,11 @@ body[data-lang="ko"] .film__item-title{font-family:var(--serif-ko)}
 body.is-ready .hero__honor-ko .ln__i{transform:none;transition-delay:.85s}
 
 /* ---- scroll parallax: --par is written by scrollFX() ---- */
-.section__head,.wordcard__ko,.factcard,.film__stage{
+.section__head,.wordcard__ko,.film__stage{
   transform:translate3d(0,var(--par,0px),0)}
+/* .reveal[data-anim="head"] sets transform:none at (0,2,0) and would win on
+   specificity, so the head's parallax has to be restated at the same weight */
+.reveal[data-anim="head"]{transform:translate3d(0,var(--par,0px),0)}
 
 /* ---- chapter curtain: the ground drops away and a rule sweeps the top edge ----
    Fails SAFE. The default state below is the lit one, so a page with no JS, a
