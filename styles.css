@@ -827,6 +827,36 @@ body[data-lang="ko"] .film__item-title{font-family:var(--serif-ko)}
    Everything here is transform/opacity/clip only — no layout thrash.
    ========================================================= */
 
+/* ---- continuous ambient motion ----
+   Every other effect on this page is scroll-triggered, so standing still the
+   page was completely dead. These never stop. */
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.022)}}
+@keyframes heroBgDrift{
+  0%,100%{transform:rotate(0deg) scale(1)}
+  50%{transform:rotate(2.4deg) scale(1.05)}}
+@keyframes sealPulse{
+  0%,100%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 0 0 0 rgba(155,44,28,.45)}
+  55%{box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 0 0 15px rgba(155,44,28,0)}}
+@keyframes ruleShimmer{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* plateSettle must stay in the list or the portrait's entrance is lost; the
+   delay hands over to breathe exactly where plateSettle comes to rest */
+.hero__portrait-ring img{
+  animation:plateSettle 1.9s .3s var(--ease-out) forwards,
+            breathe 9s 2.2s ease-in-out infinite}
+/* rotating .hero__taegukgi directly would drop its translate(-50%,-50%)
+   centring and its --hp parallax, so the wrapper carries the motion */
+.hero__bg{animation:heroBgDrift 34s ease-in-out infinite}
+.reveal.is-in .section__index{
+  animation:sealPress .75s .05s var(--ease-out) forwards,
+            sealPulse 4s 1.2s ease-out infinite}
+.node{animation:nodeFloat 6.5s ease-in-out infinite}
+/* deliberately NOT .hero__eyebrow::before — its `animation` already carries
+   ruleIn, and a second animation shorthand would replace it, leaving the rule
+   stuck at scaleX(0) */
+.idea.is-in::before,.wordcard.is-in::before{
+  animation:ruleShimmer 3.4s ease-in-out infinite}
+
 /* ---- line-by-line reveal: each line slides up from behind its own edge ---- */
 /* the clip box must clear descenders (Chronology's "gy") or they get cut off */
 .ln{display:block;overflow:hidden;padding:.2em 0;margin:-.2em 0}
@@ -898,6 +928,28 @@ body.is-ready .hero__honor-ko .ln__i{transform:none;transition-delay:.85s}
 /* ---- ideas / wordcards lift a little further than the default ---- */
 .idea{transform:translate3d(0,34px,0)}
 .idea.is-in{transform:none}
+
+/* ---- scroll-velocity lean ----
+   --vel (-1…1) and --velabs are written every frame by scrollFX(); the page
+   leans into a fast flick and springs back when it stops. The lean is folded
+   into transforms these elements ALREADY own — never declared standalone,
+   because a second transform rule just silently overwrites the first. And
+   never on an ancestor of .factcard or a .plate, since a transformed ancestor
+   breaks position:sticky. */
+.section__head,.wordcard__ko,.film__stage{
+  transform:translate3d(0,var(--par,0px),0) skewY(calc(var(--vel,0) * -1.15deg))}
+.reveal[data-anim="head"]{
+  transform:translate3d(0,var(--par,0px),0) skewY(calc(var(--vel,0) * -1.15deg))}
+.bio__chapter.is-in,.idea.is-in{
+  transform:translate3d(0,var(--par,0px),0) skewY(calc(var(--vel,0) * -.9deg))}
+.tl.is-in .tl__meta{transform:translate3d(0,var(--par,0px),0)}
+.stat{transform:translate3d(0,var(--par,0px),0)}
+.gallery__item.is-in{
+  transform:skewY(calc(var(--vel,0) * -1.7deg)) scale(calc(1 - var(--velabs,0) * .022))}
+/* blur is transform-free, so it can be applied anywhere without conflicts */
+.plate__inner{filter:blur(calc(var(--velabs,0) * 1.6px))}
+.gallery__frame{filter:blur(calc(var(--velabs,0) * .8px))}
+
 
 /* =========================================================
    CINEMATIC PLATES
@@ -1023,7 +1075,14 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
   .hero__portrait-ring,.hero__portrait-ring img,.preloader__mark,.preloader__name{
     animation:none!important;opacity:1!important;transform:none!important;clip-path:none!important}
   .hero__type,.hero__portrait,.hero__taegukgi{transform:none!important}
-  .hero__wash,.film__eq span,.hero__scroll-line::after,.node{animation:none!important}
+  .hero__wash,.film__eq span,.hero__scroll-line::after,.node,
+  .hero__bg,.hero__portrait-ring img,.idea.is-in::before,
+  .wordcard.is-in::before{animation:none!important}
+  /* velocity lean and blur off entirely */
+  .section__head,.wordcard__ko,.film__stage,.reveal[data-anim="head"],
+  .bio__chapter.is-in,.idea.is-in,.tl.is-in .tl__meta,.stat,
+  .gallery__item.is-in{transform:none!important}
+  .plate__inner,.gallery__frame{filter:none!important}
   .timeline::after{transform:scaleY(1)!important}
   .stat-strip::after{transform:scaleX(1)!important}
   .quote-feature__bar{transform:scaleY(1)!important}

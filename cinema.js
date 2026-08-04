@@ -51,13 +51,15 @@
     void main(){
       vec2 uv = vUv;
       vec2 p  = vec2(uv.x * (uRes.x / max(uRes.y, 1.0)), uv.y) * 2.15;
-      float t = uTime * 0.042;
+      // fast enough to be visibly alive when the page is standing still —
+      // the previous 0.042 was a creep you could only see by staring
+      float t = uTime * 0.30;
 
       // domain warp twice — this is what makes it read as ink in water
       vec2 q = vec2(fbm(p + vec2(0.0, t)), fbm(p + vec2(5.2, 1.3 - t)));
-      vec2 r = vec2(fbm(p + 3.6 * q + vec2(1.7, 9.2) + t * 0.45),
-                    fbm(p + 3.6 * q + vec2(8.3, 2.8) - t * 0.38));
-      float f = fbm(p + 3.8 * r);
+      vec2 r = vec2(fbm(p + 3.6 * q + vec2(1.7, 9.2) + t * 0.62),
+                    fbm(p + 3.6 * q + vec2(8.3, 2.8) - t * 0.55));
+      float f = fbm(p + 3.8 * r + vec2(t * 0.25, -t * 0.18));
 
       float ink = smoothstep(0.28, 0.98, f + uEnergy * 0.16);
 
@@ -177,12 +179,22 @@
       const d = best.el.dataset;
       const p = best.p;
       target.mood    = lerp(parseFloat(d.moodFrom || 0), parseFloat(d.moodTo || 1), p);
-      target.energy  = lerp(parseFloat(d.energyFrom || 0), parseFloat(d.energyTo || 0), p);
+      // scrolling hard churns the ink; it settles again when you stop
+      target.energy  = lerp(parseFloat(d.energyFrom || 0), parseFloat(d.energyTo || 0), p)
+                       + Math.min(velocity * 0.0016, 0.55);
       target.light   = lerp(parseFloat(d.lightFrom || 0), parseFloat(d.lightTo || 0), p);
       target.opacity = Math.min(bestVis * 1.6, 1);
     } else {
       target.opacity = 0;
     }
+  }
+
+  /* scroll velocity — px per frame, decaying, shared with the shader */
+  let lastY = window.scrollY, velocity = 0;
+  function readVelocity() {
+    const y = window.scrollY;
+    velocity = Math.abs(y - lastY);
+    lastY = y;
   }
 
   /* ---------------- render ---------------- */
@@ -218,7 +230,7 @@
     requestAnimationFrame(frame);
   }
 
-  function onScroll() { readPlates(); request(); }
+  function onScroll() { readVelocity(); readPlates(); request(); }
 
   if (reduce) {
     // no motion: paint one static frame per plate state, never animate

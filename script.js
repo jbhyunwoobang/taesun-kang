@@ -286,9 +286,14 @@
   const galleryImgs = $$(".gallery__frame img");
   // [element, travel-in-px] — negative travel moves against the scroll
   const drifters = [];
-  $$(".section__head").forEach((el) => drifters.push([el, -46]));
-  $$(".wordcard__ko").forEach((el) => drifters.push([el, -34]));
-  $$(".film__stage").forEach((el) => drifters.push([el, -26]));
+  // travel is deliberately large — ±40px reads as nothing on a 1400px screen
+  $$(".section__head").forEach((el) => drifters.push([el, -150]));
+  $$(".wordcard__ko").forEach((el) => drifters.push([el, -110]));
+  $$(".film__stage").forEach((el) => drifters.push([el, -90]));
+  $$(".bio__chapter").forEach((el, i) => drifters.push([el, i % 2 ? -110 : -60]));
+  $$(".idea").forEach((el, i) => drifters.push([el, -60 - i * 34]));
+  $$(".tl__meta").forEach((el) => drifters.push([el, -52]));
+  $$(".stat").forEach((el, i) => drifters.push([el, -40 - i * 26]));
   // deliberately not the factcard: it is position:sticky, and drifting it
   // while it is pinned reads as jitter rather than depth
 
@@ -296,12 +301,24 @@
      two makes each read force a fresh layout, which is ~20 synchronous
      reflows per frame on this page. Read pass, then write pass. */
   const pending = [];
+  /* Scroll velocity, normalised and decaying. This is what makes a page feel
+     alive under the hand: content leans into a fast flick and springs back. */
+  let velY = window.scrollY, vel = 0, velSmooth = 0;
 
   function scrollFX() {
     const vh = window.innerHeight;
     const y = window.scrollY;
     const docH = document.documentElement.scrollHeight;
     pending.length = 0;
+
+    const dy = y - velY;
+    velY = y;
+    vel = dy;
+    // ease toward the raw delta, then normalise against a brisk flick (~90px)
+    velSmooth += (vel - velSmooth) * 0.18;
+    const vn = clamp(velSmooth / 90, -1, 1);
+    pending.push([document.documentElement, "--vel", vn.toFixed(4)]);
+    pending.push([document.documentElement, "--velabs", Math.abs(vn).toFixed(4)]);
 
     /* ---- read pass ---- */
     if (hero) {
@@ -342,11 +359,22 @@
   }
 
   let ticking = false;
+  function tick() {
+    ticking = false;
+    scrollFX();
+    // Scroll events stop firing the moment the finger lifts, so the loop has
+    // to keep itself alive or the page would stay frozen mid-lean.
+    if (Math.abs(velSmooth) > 0.4) queue();
+  }
+  function queue() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(tick);
+  }
   function onScrollAll() {
     onScroll();
-    if (reduce || ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => { scrollFX(); ticking = false; });
+    if (reduce) return;
+    queue();
   }
   window.addEventListener("scroll", onScrollAll, { passive: true });
   window.addEventListener("resize", onScrollAll, { passive: true });
