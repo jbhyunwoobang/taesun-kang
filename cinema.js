@@ -10,7 +10,9 @@
   "use strict";
 
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const plates = Array.from(document.querySelectorAll(".plate"));
+  /* The hero is a stage too. The cinematic layer used to start below the fold,
+     which left the very first screen as flat paper. */
+  const plates = Array.from(document.querySelectorAll(".plate, .hero"));
   if (!plates.length) return;
 
   const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -183,7 +185,9 @@
       target.energy  = lerp(parseFloat(d.energyFrom || 0), parseFloat(d.energyTo || 0), p)
                        + Math.min(velocity * 0.0016, 0.55);
       target.light   = lerp(parseFloat(d.lightFrom || 0), parseFloat(d.lightTo || 0), p);
-      target.opacity = Math.min(bestVis * 1.6, 1);
+      // per-stage ceiling: the hero sits under real body text and wants far
+      // less of the field than a plate, which is pure image
+      target.opacity = Math.min(bestVis * 1.6, parseFloat(d.cineMax || 1));
     } else {
       target.opacity = 0;
     }

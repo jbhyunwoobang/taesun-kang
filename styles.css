@@ -207,8 +207,11 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1;color:var(-
 /* =========================================================
    HERO: asymmetric editorial plate
    ========================================================= */
+/* transparent on purpose: the fixed ink canvas paints through the hero, and
+   body's paper sits behind it as the no-WebGL fallback, so the colour is
+   identical either way */
 .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding:132px 0 96px;overflow:hidden;background:var(--paper)}
+  padding:132px 0 96px;overflow:hidden;background:transparent}
 .hero__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
 .hero__taegukgi{position:absolute;top:44%;left:58%;width:min(112vh,108vw);aspect-ratio:1;
   transform:translate(-50%,-50%) rotate(calc(-6deg + var(--hp,0) * 16deg)) scale(calc(1 + var(--hp,0) * .14));
@@ -229,10 +232,47 @@ body[data-lang="ko"] .lang-toggle__opt[data-lang-opt="ko"]{opacity:1;color:var(-
 @keyframes wash{from{transform:translate3d(-1.5%,-1%,0) scale(1)}to{transform:translate3d(2%,1.5%,0) scale(1.06)}}
 .hero__grain,.hero__vignette{display:none}
 
+/* ---- film layer: moving grain plus a vignette, sitting over the ink field
+   but under the type. This is the cheapest thing on the page that reads as
+   "shot on film" rather than "rendered in a browser". ---- */
+/* Grain only, blended soft-light so it adds texture without moving the paper's
+   luminance. A multiply vignette was built first and measured twice: it can
+   only darken, and on a light screen carrying small muted text it took the
+   eyebrow from 3.67:1 to 1.6:1. Darkening is simply not available here, so
+   the frame is shaped with light (below) instead of shadow. */
+.hero__film{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='0.42'/%3E%3C/svg%3E");
+  background-size:220px 220px;
+  mix-blend-mode:soft-light;opacity:.4}
+/* the frame is shaped by a warm bloom that BRIGHTENS, kept to the portrait
+   side and the corners so it never sits under the type */
+.hero__film::after{content:"";position:absolute;inset:0;mix-blend-mode:screen;
+  background:
+    radial-gradient(52% 60% at 78% 34%, rgba(255,238,206,.30), transparent 70%),
+    radial-gradient(46% 40% at 22% 88%, rgba(255,240,214,.16), transparent 72%)}
+/* jump the grain on whole frames, the way real film weave does */
+body.is-ready .hero__film{animation:grainWeave .9s steps(6) infinite}
+@keyframes grainWeave{
+  0%{background-position:0 0, 0 0}       20%{background-position:0 0, -32px 14px}
+  40%{background-position:0 0, 18px -26px} 60%{background-position:0 0, -24px -12px}
+  80%{background-position:0 0, 26px 22px}  100%{background-position:0 0, 0 0}}
+
+/* ---- letterbox: the frame opens once the curtain lifts ---- */
+.hero__bar{position:absolute;left:0;right:0;z-index:6;pointer-events:none;
+  height:13vh;background:#12100c;
+  transition:height 1.5s var(--ease-out) .15s}
+.hero__bar--top{top:0}
+.hero__bar--bottom{bottom:0}
+body.is-ready .hero__bar{height:0}
+
 .hero__grid{position:relative;z-index:2;max-width:var(--wide);width:100%;margin:0 auto;
   padding-inline:var(--gut);
   display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.86fr);
-  gap:clamp(28px,4vw,64px);align-items:center}
+  gap:clamp(28px,4vw,64px);align-items:center;
+  /* slow push-in: the shot settles instead of simply being there */
+  transform:scale(1.038);transform-origin:50% 46%;
+  transition:transform 3.4s var(--ease-out)}
+body.is-ready .hero__grid{transform:scale(1)}
 
 .hero__type{position:relative;z-index:3;
   transform:translate3d(0,calc(var(--hp,0) * -54px),0);
@@ -289,9 +329,17 @@ body[data-lang="ko"] .hero__lede{font-family:var(--serif-ko)}
 .hero__portrait{margin:0;position:relative;
   transform:translate3d(0,calc(var(--hp,0) * -128px),0) scale(calc(1 + var(--hp,0) * .05));
   will-change:transform}
-.hero__portrait-ring{background:#fff;padding:11px;border:1px solid var(--line);box-shadow:var(--shadow-lg);
-  overflow:hidden;
+.hero__portrait-ring{background:#fff;padding:11px;border:1px solid var(--line);
+  box-shadow:0 2px 4px rgba(40,30,20,.08), 0 40px 90px -38px rgba(40,30,20,.62);
+  overflow:hidden;position:relative;
   clip-path:inset(0 0 100% 0);animation:plateWipe 1.25s .3s var(--ease-out) forwards}
+/* a light rakes across the plate, the way it would across glass in a room */
+.hero__portrait-ring::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(104deg,transparent 38%,rgba(255,252,244,.42) 50%,transparent 62%);
+  transform:translateX(-130%)}
+body.is-ready .hero__portrait-ring::after{animation:plateSheen 7.5s 3s ease-in-out infinite}
+@keyframes plateSheen{0%{transform:translateX(-130%)}
+                      26%,100%{transform:translateX(130%)}}
 @keyframes plateWipe{to{clip-path:inset(0 0 0 0)}}
 .hero__portrait-ring img{width:100%;height:auto;aspect-ratio:4/4.6;object-fit:cover;object-position:50% 32%;
   filter:sepia(.14) contrast(1.03) saturate(.9);
@@ -1080,7 +1128,12 @@ body[data-lang="ko"] .plate__sub{font-family:var(--serif-ko);word-break:keep-all
   .hero__type,.hero__portrait,.hero__taegukgi{transform:none!important}
   .hero__wash,.film__eq span,.hero__scroll-line::after,.node,
   .hero__bg,.hero__portrait-ring img,.idea.is-in::before,
-  .wordcard.is-in::before{animation:none!important}
+  .wordcard.is-in::before,.hero__film,
+  .hero__portrait-ring::after{animation:none!important}
+  /* the frame is simply already open, and the shot already settled */
+  .hero__bar{height:0!important;transition:none!important}
+  .hero__grid{transform:none!important;transition:none!important}
+  .hero__portrait-ring::after{opacity:0!important}
   /* velocity lean and blur off entirely */
   .section__head,.wordcard__ko,.film__stage,.reveal[data-anim="head"],
   .bio__chapter.is-in,.idea.is-in,.tl.is-in .tl__meta,.stat,

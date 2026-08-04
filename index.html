@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Serif:ital@0;1&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=28" />
+<link rel="stylesheet" href="styles.css?v=32" />
 
 <!-- Without JS nothing would lift the preloader or trip the scroll reveals,
      so resolve every animated element to its final state. -->
@@ -35,6 +35,8 @@
   .section__index{opacity:1!important;transform:rotate(-2.5deg)!important;animation:none!important}
   .hero__eyebrow::before,.hero__name-ko,.hero__name-hanja,.hero__roman,.hero__honor,
   .hero__lede,.hero__enter,.hero__portrait-ring,.hero__portrait-ring img,
+  .hero__bar{height:0!important}
+  .hero__grid{transform:none!important}
   .hero__portrait-cap,.hero__scroll{animation:none!important;opacity:1!important;
     transform:none!important;clip-path:none!important}
   .timeline::after{transform:scaleY(1)!important}
@@ -114,11 +116,18 @@
 <main id="top">
 
   <!-- ===== HERO ===== -->
-  <section class="hero" id="hero">
+  <section class="hero" id="hero"
+           data-mood-from="0.03" data-mood-to="0.07"
+           data-energy-from="0.30" data-energy-to="0.44"
+           data-light-from="0.16" data-light-to="0.10"
+           data-cine-max="0.12">
     <div class="hero__bg" aria-hidden="true">
       <div class="hero__taegukgi"></div>
       <div class="hero__wash"></div>
     </div>
+    <div class="hero__film" aria-hidden="true"></div>
+    <span class="hero__bar hero__bar--top" aria-hidden="true"></span>
+    <span class="hero__bar hero__bar--bottom" aria-hidden="true"></span>
 
     <div class="hero__grid">
       <div class="hero__type">
@@ -947,6 +956,6 @@
 </button>
 
 <script src="script.js?v=19"></script>
-<script src="cinema.js?v=5"></script>
+<script src="cinema.js?v=6"></script>
 </body>
 </html>
